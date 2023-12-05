@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Neucha&family=Poppins:wght@400;500;700&display=swap');
+
+:root {
+    --field-width: 560px !important;
+    --bg-color: #F8F8F8;
+    --border-color: #E6E8EB;
+    --placeholder: #999999;
+    --disabled-tf: #B3B3B3;
+    --page-container: 24px;
+    --black-color: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* fonts */
+.title {
+    font-size: 24px ;
+}
+
+.label,
+.pargraph {
+    font-size: 14px ;
+}
+
+.tab-label {
+    font-size: 16px ;
+}
+
+.small-loader .sl-spinner1 {
+    width: 20px ;
+}
+
+.error {
+    color: var(--mui-palette-error-main) !important;
+}
+
+.pageContainer {
+    padding: 24px;
+    background-color: var(--bg-color);
+    min-height: 100vh;
+}
+
+.pageContainerVisiblesidebar {
+    margin-top: 64px;
+    margin-right: 64px;
+    min-height: calc(100vh - 64px);
+}
+
+.pageContainerOpenSidebar {
+    margin-right: 232px;
+}
