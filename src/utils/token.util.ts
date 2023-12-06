@@ -1,9 +1,6 @@
 import { isExpired, decodeToken } from "react-jwt";
-import { getValue } from "../storage.util";
-
+import { getValue } from "./storage.util";
 export const TOKEN_KEY = "authToken";
-
-
 
 export const getDecodedToken = () => {
     let token = getValue(TOKEN_KEY);
