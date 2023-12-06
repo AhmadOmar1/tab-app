@@ -36,6 +36,12 @@ const routes = [{
   element: <Home />,
   requireAuth: true,
   requireAdmin: false
+},
+{
+  path: '/',
+  element: <Home />,
+  requireAuth: true,
+  requireAdmin: false
 }, {
   path: '/hotel',
   element: <Hotel />,
@@ -47,7 +53,14 @@ const routes = [{
   element: <Search />,
   requireAuth: true,
   requireAdmin: false
-}]
+},
+{
+  path: '*',
+  element: <NotFound />,
+  requireAuth: false,
+  requireAdmin: false
+},
+]
 
 function App() {
   return (
@@ -58,8 +71,6 @@ function App() {
             <Route key={index} element={route.requireAuth ? (<ProtectedRoute onlyAdmins={route.requireAdmin} component={route.element} />) : route.element} path={route.path} />
           ))
         }
-        <Route path="*" element={<NotFound />}></Route>
-
       </Routes>
     </>
   )

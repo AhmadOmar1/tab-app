@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NotFound from '../pages/not-found/not-found.page';
-import { isLoggedIn } from '../utils/alerts/token.util';
+import { isLoggedIn } from '../utils/token.util';
 
 
 interface ProtectedRouteProps {
