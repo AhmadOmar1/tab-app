@@ -9,14 +9,12 @@ import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/s
 import { theme } from './theme/theme.ts'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-
   <React.StrictMode>
     <BrowserRouter>
       <CssVarsProvider theme={theme} >
         <Provider store={store}>
           <App />
         </Provider>
-
       </CssVarsProvider>
     </BrowserRouter>
   </React.StrictMode>
