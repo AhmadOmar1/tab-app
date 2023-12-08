@@ -25,7 +25,7 @@ Welcome to our Travel and Accommodation Booking Platform! This web application a
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/travel-booking-platform.git
+   git clone https://github.com/your-username/travel-booking-platform.git](https://github.com/AhmadOmar1/tab-app.git
 --------
 2. Install dependencies:
    ```bash
