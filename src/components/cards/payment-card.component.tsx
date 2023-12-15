@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography, TextField, Button } from '@mui/material';
+import { Card, CardContent, Typography, TextField } from '@mui/material';
 
 const PaymentCard: React.FC = () => {
     return (
@@ -21,7 +21,7 @@ const PaymentCard: React.FC = () => {
                 </Typography>
                 <TextField placeholder="MM / YYYY" fullWidth />
                 <Typography variant="body2" component="div">
-                    Card Number
+                    CVV
                 </Typography>
                 <TextField placeholder="3-4 digits" fullWidth />
             </CardContent>
