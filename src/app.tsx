@@ -1,19 +1,43 @@
+
 import { Route, Routes } from "react-router-dom"
-import ProtectedRoute from "./components/protected-route.component"
+import Login from "./pages/login/login.page"
+import { ThemeProvider } from "@mui/material/styles";
+import { useSelector } from "react-redux"
+import { darkTheme, lightTheme } from "./theme/theme"
+import { Paper } from "@mui/material"
+import NavBar from "./components/navbar/navbar.component"
+import { RootState } from '../src/redux/store';
 import routes from "./routes"
+import PrivateRoute from "./components/private-route.component";
+
+
 
 function App() {
+  const theme = useSelector((state: RootState) => state.theme);
+
+
   return (
-    <>
-      <Routes>
-        {
-          routes.map((route, index) => (
-            <Route key={index} element={route.requireAuth ? (<ProtectedRoute onlyAdmins={route.requireAdmin} component={route.element} />) : route.element} path={route.path} />
-          ))
-        }
-      </Routes>
-    </>
-  )
+    <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
+      <Paper
+        style={{
+          minHeight: "100vh",
+          borderRadius: "0",
+        }}
+      >
+        {<NavBar />}
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          {routes.map((route, index) => (
+            <Route
+              key={index}
+              element={<PrivateRoute {...route} element={route.element} />}
+              path={route.path}
+            />
+          ))}
+        </Routes>
+      </Paper>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;

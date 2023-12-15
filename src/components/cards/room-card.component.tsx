@@ -36,7 +36,7 @@ const RoomCard: React.FC<RoomProps> = ({ roomType = 'Standard', price = 20, imag
                 component="img"
                 sx={{ width: 200 }}
                 image={imageSrc}
-                alt="hotel image"
+                alt="room image"
             />
             <CardContent sx={{
                 width: '100%',

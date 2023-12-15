@@ -1,11 +1,11 @@
 import React from 'react';
-import {  Card, CardContent, TextField, Typography } from '@mui/material';
+import { Card, CardContent, TextField, Typography } from '@mui/material';
 
 interface PersonalDetailsProps {
     firstName?: string;
     lastName?: string;
     address?: string;
-    width: number | string;
+    width?: number | string;
 }
 
 const PersonalDetails: React.FC<PersonalDetailsProps> = ({ }) => {

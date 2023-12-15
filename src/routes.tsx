@@ -6,13 +6,8 @@ import Hotel from './pages/hotel/hotel.page';
 import Search from './pages/search/search.page';
 import Login from './pages/login/login.page';
 import NotFound from './pages/not-found/not-found.page';
-
-interface Route {
-  path: string;
-  element: React.ReactElement;
-  requireAuth: boolean;
-  requireAdmin: boolean;
-}
+import { Route } from './models/routes';
+import Forbidden from './pages/forbidden/forbidden.page';
 
 const routes: Route[] = [
   {
@@ -63,6 +58,13 @@ const routes: Route[] = [
     requireAuth: true,
     requireAdmin: false,
   },
+  {
+    path: '/forbidden',
+    element: <Forbidden />,
+    requireAuth: true,
+    requireAdmin: false,
+  },
+  
   {
     path: '*',
     element: <NotFound />,
