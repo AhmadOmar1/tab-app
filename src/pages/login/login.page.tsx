@@ -1,79 +1,140 @@
-import { Formik, Field } from 'formik'
-import { Box, Button, Container, TextField } from '@mui/material'
+import { Formik, Field, ErrorMessage, FormikHelpers } from 'formik';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import LockIcon from '../../assets/icons/lock-icon.component';
+import { InputAdornment, Paper, useTheme, Button } from '@mui/material';
+import UserIcon from '../../assets/icons/user-icon.component';
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/auth-slice';
+import { loginValidationSchema } from '../../schemas';
+import { useNavigate } from 'react-router-dom';
+import EyeIcon from '../../assets/icons/eye-icon.component';
+import { useEffect, useState } from 'react';
+import * as authService from '../../services/auth.service';
 
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../redux/store'
-import { login, logout } from '../../redux/app-slice'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { FormEvent } from 'react'
+export default function Login() {
 
-const Login = () => {
+    useEffect(() => {
+        document.title = "Login Page"; 
+    }, []);
 
     const dispatch = useDispatch();
-    const loginValue = useSelector((state: RootState) => state.isLoggedIn);
     const navigate = useNavigate();
+    const initialValues = { username: '', password: '' };
+    const [displayPassword, setDisplayPassword] = useState(false);
+    const theme = useTheme();
 
-    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleLogin = async (
+        values: { username: string; password: string; },
+        formikProps: FormikHelpers<typeof initialValues>
+    ) => {
         try {
-            dispatch(login());
-            if (loginValue.isLoggedIn) {
-                console.log('Login sucssfully' + loginValue.isLoggedIn);
-                <Navigate to="/home" />
-
+            const response = await authService.login(values);
+            dispatch(login({ user: response.user, token: response.token }));
+            if (response.userType === 'Admin') {
+                navigate('/admin');
+            } else if (response.userType === 'User') {
                 navigate('/home');
-            } else {
-                console.error("Login failed.");
             }
-
         } catch (error) {
-            // Handle login error
-            console.error("Login failed:", error);
+            console.error('Login failed:', error);
+            formikProps.setErrors({ password: 'Invalid username or password' });
+        } finally {
         }
     };
+
+    function handlePasswordDispaly(): void {
+        setDisplayPassword(!displayPassword);
+    }
+
+
     return (
-        <>
+        <Paper elevation={0} sx={{ height: '100vh', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+            <Container component="main" maxWidth="sm" sx={{ width: '100vw' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Box>
+                        <Typography color="primary.main" component="span" variant="h5" sx={{ fontWeight: 'bold' }}>
+                            SIGN IN{' '}
+                        </Typography>
+                        <Typography component="span" variant="h5" color="primary.light" sx={{ fontWeight: 'bold' }}>
+                            NOW!
+                        </Typography>
+                    </Box>
 
-            <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh', justifyContent: 'center' }}>
-                <Formik
-                    initialValues={{
-                        email: '',
-                        password: ''
-                    }}
-                    onSubmit={(values) => {
-                        console.log(values)
-                    }}
-                >
-                    <form onSubmit={handleLogin}>
-                        <Box sx={{ width: 500 }}>
-                            <Field
-                                component={TextField}
-                                name='Username'
-                                type='text'
-                                label='Username*'
-                                variant='outlined'
-                                fullWidth
-                                margin='normal'
-                            />
-                            <Field
-                                component={TextField}
-                                name='password'
-                                type='password'
-                                label='Password*'
-                                variant='outlined'
-                                fullWidth
-                                margin='normal'
-                            />
-                            <Button type='submit' variant='outlined' color='primary' fullWidth>SIGN IN</Button>
-                        </Box>
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={loginValidationSchema}
+                        onSubmit={handleLogin}
+                    >
+                        {(formikProps) => (
+                            <form onSubmit={formikProps.handleSubmit} noValidate>
+                                <Field
+                                    as={TextField}
+                                    sx={{ marginBlock: 1 }}
+                                    type="text"
+                                    placeholder="Username"
+                                    name="username"
+                                    fullWidth
+                                    autoFocus
+                                    autoComplete="username"
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <UserIcon color="#999" />
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                />
+                                <ErrorMessage name="username" component="div" >
+                                    {msg => <div style={{ color: theme.palette.error.dark }}>{msg}</div>}
+                                </ErrorMessage>
+                                <Field
+                                    as={TextField}
+                                    sx={{ marginBlock: 1 }}
+                                    type={displayPassword ? "text" : "password"}
+                                    placeholder="Password"
+                                    name="password"
+                                    fullWidth
+                                    autoComplete="current-password"
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <LockIcon color="#999" />
+                                            </InputAdornment>
+                                        ),
+                                        endAdornment: (
+                                            <InputAdornment position="end" onClick={handlePasswordDispaly} sx={{ cursor: 'pointer' }} >
+                                                <EyeIcon />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
 
-                    </form>
-                </Formik>
+                                <ErrorMessage name="password" component="div" >
+                                    {msg => <div style={{ color: theme.palette.error.dark }}>{msg}</div>}
+                                </ErrorMessage>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="outlined"
+                                    sx={{
+                                        mt: 3,
+                                        fontWeight: 'bold',
+                                        height: '40px',
+                                        fontSize: '1.1rem'
+                                    }}
+                                >
+                                    SIGN IN
+                                </Button>
 
-            </Container></>
+                            </form>
+                        )}
+                    </Formik>
+                </Box>
+            </Container>
+        </Paper>
+    );
 
-
-    )
 }
-
-export default Login

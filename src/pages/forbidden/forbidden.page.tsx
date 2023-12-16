@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from 'react';
 import { Box, Button, Typography } from "@mui/material";
-import style from './not-found.module.css'
-const NotFound = () => {
+import style from './forbidden.module.css'
+const Forbidden = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        document.title = "Page Not Found";
+        document.title = "Page Forbidden";
     }, []);
 
     const [animationKey, setAnimationKey] = useState(0);
@@ -32,7 +32,7 @@ const NotFound = () => {
             }, time);
         };
 
-        loop1 = animateDigit(digit1Ref, 4);
+        loop1 = animateDigit(digit1Ref, 3);
         loop2 = animateDigit(digit2Ref, 0);
         loop3 = animateDigit(digit3Ref, 4);
 
@@ -73,14 +73,14 @@ const NotFound = () => {
             </div>
 
             <Typography className={style.pageTitle} fontWeight={700} variant={'h2'} marginTop={1}>
-                Page Not Found
+                Page Forbidden
             </Typography>
             <Typography className={style.secondPageTitle} variant="button" color='#999999' marginTop={2} marginBottom={5}>
-                {'We\'re sorry, the page requested could not be found'}
+                {`We're sorry, the page you requested could not be accessed.`}
             </Typography>
             <Button variant="outlined" color="primary" onClick={onClick}>Return to Home</Button>
         </Box>
     );
 }
 
-export default NotFound;
+export default Forbidden;

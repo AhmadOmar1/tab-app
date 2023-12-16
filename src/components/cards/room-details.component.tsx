@@ -26,31 +26,31 @@ const RoomDetails: React.FC<RoomProps> = ({ capacityOfAdults = 2, capacityOfChil
                     </Typography>
                 </Box>
             </Box>
-            <Rating sx={{ marginBottom:1 }} value={starRating} />
+            <Rating sx={{ marginBottom: 1 }} value={starRating} />
             {
                 description && <Box>
-                <Typography gutterBottom sx={{ fontFamily: 'Montserrat' }} variant="h6" component="div">
-                    About Room
-                </Typography>
-                <Box padding={1}>
-                    <Typography gutterBottom sx={{ fontFamily: 'Montserrat' }} variant="body1" component="div">
-                        {description}
+                    <Typography gutterBottom sx={{ fontFamily: 'Montserrat' }} variant="h6" component="div">
+                        About Room
                     </Typography>
+                    <Box padding={1}>
+                        <Typography gutterBottom sx={{ fontFamily: 'Montserrat' }} variant="body1" component="div">
+                            {description}
+                        </Typography>
+                    </Box>
                 </Box>
-            </Box>
             }
             <Box>
                 <Typography gutterBottom sx={{ fontFamily: 'Montserrat' }} variant="h6" component="div">
                     Amenties
                 </Typography>
                 <Stack direction="row" sx={{ p: 1, width: '70%', flexWrap: 'wrap', gap: 1 }}>
-                    {amenities.map((amenity) => {
-                        return <Chip label={amenity} />
+                    {amenities.map((amenity, key) => {
+                        return <Chip label={amenity} key={key} />
                     }
                     )}
                 </Stack>
             </Box>
-            <Box> 
+            <Box>
                 <Typography gutterBottom sx={{ fontFamily: 'Montserrat' }} variant="h6" component="div">
                     Room Size
                 </Typography>

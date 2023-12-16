@@ -3,14 +3,14 @@ export const lightTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      contrastText: "#ffff",
-      light: "#DA0A08",
-      main: "#e76f51",
+      contrastText: "#e76f51",
+      light: "#e76f51",
+      main: "#222",
       dark: "#000",
     },
     secondary: {
-      light: "#CFACA3",
-      main: "#C3978C",
+      light: "#fff",
+      main: "#222",
       dark: "#A17C73",
     },
     success: {
@@ -19,8 +19,8 @@ export const lightTheme = createTheme({
       dark: "#055A19",
     },
     error: {
-      light: "#E13B39",
-      main: "#DA0A08",
+      light: "#A17C73",
+      main: "#AE0806",
       dark: "#AE0806",
     },
     warning: {
@@ -34,8 +34,21 @@ export const lightTheme = createTheme({
     text: {
       primary: "#111111",
     },
+    
   },
   components: {
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontFamily:  'Montserrat',
+          fontWeightBold: 700,
+          fontWeightLight: 300,
+          fontWeightRegu1ar: 400,
+        },
+      },
+
+    },
+
     MuiButton: {
       styleOverrides: {
         root: {
@@ -58,8 +71,8 @@ export const darkTheme = createTheme({
     mode: "dark",
     primary: {
       contrastText: "#ffff",
-      light: "#ffff",
-      main: "#e76f51",
+      light: "#e76f51",
+      main: "#fff",
       dark: "#9e2a2b",
     },
     secondary: {
@@ -73,9 +86,9 @@ export const darkTheme = createTheme({
       dark: "#055A19",
     },
     error: {
-      light: "#E13B39",
-      main: "#DA0A08",
-      dark: "#AE0806",
+      light: "#A17C73",
+      main: "#AE0806",
+      dark: "#e76f51",
     },
     warning: {
       light: "#E9B449",
