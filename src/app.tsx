@@ -10,12 +10,8 @@ import { RootState } from '../src/redux/store';
 import routes from "./routes"
 import PrivateRoute from "./components/private-route.component";
 
-
-
 function App() {
   const theme = useSelector((state: RootState) => state.theme);
-
-
   return (
     <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
       <Paper
