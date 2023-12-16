@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import theme from "./app-slice";
-import isLoggedIn  from './app-slice'
+import theme from "./theme-slice";
+import auth  from './auth-slice'
 
 
 export const store = configureStore({
     reducer: {
         theme,
-        isLoggedIn,
+        auth,
     },
 })
 
