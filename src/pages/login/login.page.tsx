@@ -6,50 +6,63 @@ import Container from '@mui/material/Container';
 import LockIcon from '../../assets/icons/lock-icon.component';
 import { InputAdornment, Paper, useTheme, Button } from '@mui/material';
 import UserIcon from '../../assets/icons/user-icon.component';
-import { useDispatch } from 'react-redux';
-import { login } from '../../redux/auth-slice';
+import { login as loginReducer } from '../../redux/user/auth-slice';
 import { loginValidationSchema } from '../../schemas';
 import { useNavigate } from 'react-router-dom';
 import EyeIcon from '../../assets/icons/eye-icon.component';
-import { useEffect, useState } from 'react';
-import * as authService from '../../services/auth.service';
-
+import { useEffect,  useState } from 'react';
+import { useLoginMutation } from '../../redux/user/authApi';
+import Loading from '../../components/common/loading/loading.component';
+import { useDispatch } from 'react-redux';
 export default function Login() {
 
     useEffect(() => {
-        document.title = "Login Page"; 
+        document.title = "Login Page";
     }, []);
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const initialValues = { username: '', password: '' };
+    const [loginMutation, { isLoading }] = useLoginMutation();
+    const dispatch = useDispatch();
     const [displayPassword, setDisplayPassword] = useState(false);
     const theme = useTheme();
+
 
     const handleLogin = async (
         values: { username: string; password: string; },
         formikProps: FormikHelpers<typeof initialValues>
     ) => {
         try {
-            const response = await authService.login(values);
-            dispatch(login({ user: response.user, token: response.token }));
+            const response = await loginMutation(values).unwrap();
+            const [, tokenPayloadEncoded] = response.authentication.split('.');
+            const tokenPayload = JSON.parse(atob(tokenPayloadEncoded));    
+            dispatch(loginReducer({ user:tokenPayload, token: response.authentication }));
             if (response.userType === 'Admin') {
+                console.log(" response : ", response , "  : ", response.userType);
                 navigate('/admin');
             } else if (response.userType === 'User') {
                 navigate('/home');
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Login failed:', error);
-            formikProps.setErrors({ password: 'Invalid username or password' });
-        } finally {
+            if (error?.response?.status === 400) {
+                formikProps.setErrors({ password: 'Invalid username or password' });
+            } else if (error?.response?.status === 401) {
+                formikProps.setErrors({ password: 'Unauthorized' });
+            } else {
+                formikProps.setErrors({ password: 'Something went wrong' });
+            }
         }
-    };
+    }
 
     function handlePasswordDispaly(): void {
         setDisplayPassword(!displayPassword);
     }
 
-
+    if (isLoading) return (
+        <Loading />
+    )
+    
     return (
         <Paper elevation={0} sx={{ height: '100vh', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
             <Container component="main" maxWidth="sm" sx={{ width: '100vw' }}>
@@ -128,7 +141,6 @@ export default function Login() {
                                 >
                                     SIGN IN
                                 </Button>
-
                             </form>
                         )}
                     </Formik>

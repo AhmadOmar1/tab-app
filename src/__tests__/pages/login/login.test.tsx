@@ -1,14 +1,10 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureStore, { MockStoreEnhanced } from 'redux-mock-store';
-import Login from '../../pages/login/login.page';
 import { BrowserRouter as Router } from 'react-router-dom'; 
 import '@testing-library/jest-dom';
-
-
+import Login from '../../../pages/login/login.page';
 interface RootState {
-
-
 }
 
 const mockStore = configureStore<RootState>();
@@ -28,7 +24,7 @@ describe('Login component', () => {
     expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
 
     const mockLogin = jest.fn();
-    jest.mock('../../services/auth.service', () => ({ login: mockLogin }));
+    jest.mock('../../../redux/user/authApi', () => ({ login: mockLogin }));
 
     act(() => {
       fireEvent.change(screen.getByPlaceholderText('Username'), { target: { value: 'testuser' } });
