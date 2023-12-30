@@ -1,8 +1,11 @@
 import React from 'react'
 import { IconProps } from './IconProps'
+import { useTheme } from '@mui/material';
 
-const AmenitiesIcon: React.FC<IconProps> = ({ width=17, height=17, color='black' }) => {
-    return <svg width={width} height={height} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+const AmenitiesIcon: React.FC<IconProps> = ({ width=17, height=17, color='' }) => {
+    const theme = useTheme();
+    color = theme.palette.primary.main;
+ return <svg width={width} height={height} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M8.66667 0.666667C8.66667 0.298477 8.36819 0 8 0C7.63181 0 7.33333 0.298477 7.33333 0.666667V1.33333C7.33333 1.70152 7.63181 2 8 2C8.36819 2 8.66667 1.70152 8.66667 1.33333V0.666667Z" fill={color} />
         <path d="M3.13807 2.19526C2.87772 1.93491 2.45561 1.93491 2.19526 2.19526C1.93491 2.45561 1.93491 2.87772 2.19526 3.13807L2.86193 3.80474C3.12228 4.06509 3.54439 4.06509 3.80474 3.80474C4.06509 3.54439 4.06509 3.12228 3.80474 2.86193L3.13807 2.19526Z" fill={color} />
         <path d="M13.8047 3.13807C14.0651 2.87772 14.0651 2.45561 13.8047 2.19526C13.5444 1.93491 13.1223 1.93491 12.8619 2.19526L12.1953 2.86193C11.9349 3.12228 11.9349 3.54439 12.1953 3.80474C12.4556 4.06509 12.8777 4.06509 13.1381 3.80474L13.8047 3.13807Z" fill={color} />
