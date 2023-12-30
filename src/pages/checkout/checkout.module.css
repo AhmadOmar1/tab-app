@@ -1,0 +1,18 @@
+.checkoutConatiner {
+    padding: 10rem 0px !important;
+    min-height: 100vh;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+
+
+@media (max-width: 968px) {
+    .checkoutConatiner {
+        padding: 5rem 0px !important;
+        flex-direction: column-reverse;
+        align-items: center;
+        gap:4rem;
+    }
+}
