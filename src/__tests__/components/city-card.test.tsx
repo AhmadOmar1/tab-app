@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom'
-import CityCard from '../../components/cards/city-card.component';
+import CityCard from '../../components/cards/city/city-card.component';
 
 const cityName = 'New York';
 
