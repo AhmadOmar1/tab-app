@@ -1,4 +1,5 @@
 import { createTheme, experimental_extendTheme as extendTheme } from '@mui/material';
+
 export const lightTheme = createTheme({
   palette: {
     mode: "light",
@@ -29,18 +30,34 @@ export const lightTheme = createTheme({
       dark: "#B68116",
     },
     background: {
-      paper: "#f2f2f2",
+      paper: "#f2f2f3",
     },
     text: {
       primary: "#111111",
     },
     
   },
+ 
   components: {
     MuiTypography: {
       styleOverrides: {
+        h1: {
+          fontWeight: 700, 
+        },
+        h2: {
+          fontWeight: 700,
+        },
+        h3: {
+          fontWeight: 700,
+        },
+        h4: {
+          fontWeight: 700,
+        },
+        h5: {
+          fontWeight: 700,
+        },
         root: {
-          fontFamily:  'Montserrat',
+          fontFamily: 'Montserrat',
           fontWeightBold: 700,
           fontWeightLight: 300,
           fontWeightRegu1ar: 400,
@@ -53,6 +70,9 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 8,
+          fontWeight: 700,
+          textDecoration:'uppercase',
+
         },
       },
     },
@@ -76,9 +96,9 @@ export const darkTheme = createTheme({
       dark: "#9e2a2b",
     },
     secondary: {
-      light: "#CFACA3",
-      main: "#C3978C",
-      dark: "#A17C73",
+      light: "#fff",
+      main: "#AE4806",
+      dark: "#e76f51",
     },
     success: {
       light: "#268C3E",
@@ -95,8 +115,9 @@ export const darkTheme = createTheme({
       main: "#E4A11C",
       dark: "#B68116",
     },
+  
     background: {
-      paper: "#222",
+      paper: "#333",
     },
     text: {
       primary: "#fff",
@@ -106,8 +127,23 @@ export const darkTheme = createTheme({
   components: {
     MuiTypography: {
       styleOverrides: {
+        h1: {
+          fontWeight: 700, 
+        },
+        h2: {
+          fontWeight: 700,
+        },
+        h3: {
+          fontWeight: 700,
+        },
+        h4: {
+          fontWeight: 700,
+        },
+        h5: {
+          fontWeight: 700,
+        },
         root: {
-          fontFamily:  'Montserrat',
+          fontFamily: 'Montserrat',
           fontWeightBold: 700,
           fontWeightLight: 300,
           fontWeightRegu1ar: 400,
@@ -120,6 +156,9 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 8,
+          fontWeight: 700,
+          
+          
         },
       },
     },

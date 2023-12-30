@@ -6,8 +6,7 @@ import Switch from '@mui/material/Switch';
 import TabIcon from '../../assets/icons/tab-icon.component';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTheme } from '../../redux/theme-slice';
-import { RootState } from '../../redux/store';
-import { Avatar, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
+import { Avatar, IconButton, Menu, MenuItem, Tooltip, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logout } from '../../redux/auth-slice';
@@ -16,15 +15,15 @@ const settings = ['Profile', 'Logout'];
 
 export default function NavBar() {
 
-    const theme = useSelector((state: RootState) => state.theme);
+    const theme = useTheme();
     const dispatch = useDispatch()
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
 
     const location = useLocation();
 
-    const isLoginPage = location.pathname === "/login" || location.pathname === "/fobidden" || location.pathname === "/notfound" ;
-  
+    const isLoginPage = location.pathname === "/login" || location.pathname === "/fobidden" || location.pathname === "/notfound";
+
     const renderNavBar = !isLoginPage;
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -43,17 +42,18 @@ export default function NavBar() {
     };
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static"  >
+            <AppBar sx={{ zIndex: 2000 }} position="fixed"  >
                 <Toolbar>
-                    <TabIcon height='50' width='50' color='white' />
+                    <TabIcon height='50' width='50'  />
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     </Typography>
                     <Switch
-                        checked={theme === 'dark'}
+                        color= "primary"
+                        checked={theme.palette.mode === 'dark'}
                         onChange={() => dispatch(toggleTheme())}
                     />
 
-                    {renderNavBar &&  <Box sx={{ flexGrow: 0 }}>
+                    {renderNavBar && <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <Avatar
@@ -84,7 +84,6 @@ export default function NavBar() {
                             ))}
                         </Menu>
                     </Box>}
-                   
                 </Toolbar>
             </AppBar>
         </Box>
