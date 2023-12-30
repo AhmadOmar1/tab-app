@@ -1,6 +1,9 @@
+import { useTheme } from "@mui/material"
 import { IconProps } from "./IconProps"
 
 const TabIcon: React.FC<IconProps> = ({ width = '75', height = '65', color = 'black' }) => {
+    const theme = useTheme();
+    color =  theme.palette.text.primary
     return (
         <svg width={width} height={height} viewBox="0 0 75 65" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
             <path d="M64.2219 56.7747H12.7378C8.79757 56.7747 5.58496 53.5621 5.58496 49.6218V32.4605C5.58496 28.5202 8.79757 25.3076 12.7378 25.3076H64.2219C68.1622 25.3076 71.3748 28.5202 71.3748 32.4605V49.6218C71.3748 53.5621 68.1622 56.7747 64.2219 56.7747ZM12.7378 28.177C10.3764 28.177 8.45434 30.0991 8.45434 32.4605V49.6218C8.45434 51.9832 10.3764 53.9053 12.7378 53.9053H64.2219C66.5833 53.9053 68.5054 51.9832 68.5054 49.6218V32.4605C68.5054 30.0991 66.5833 28.177 64.2219 28.177H12.7378Z" fill={color} />

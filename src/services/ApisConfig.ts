@@ -3,7 +3,7 @@ import axios, { HttpStatusCode } from 'axios';
 import { getValue } from '../utils/storage.util';
 
 
-const BASE_URL = "https://app-hotel-reservation-webapi-uae-dev-001.azurewebsites.net/api/";
+const BASE_URL = "https://app-hotel-reservation-webapi-uae-dev-001.azurewebsites.net/";
 const token = getValue("token");
 
 const axiosInstance = axios.create({
@@ -16,7 +16,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        if (false) {
+        if (!token) {
             return config;
         }
         config.headers.Authorization = `Bearer ${token}`;

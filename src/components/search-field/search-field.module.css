@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #999;
+  border-radius: 50px;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  width: 40%;
+  min-width: 400px;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 5px;
+  width: 100%;
+  gap: 0;
+  flex-grow: 1;
+}
+
+.counterList {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+}
+
+.counters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-direction: column;
+  width: 100%;
+}
+
+.guests {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-direction: column;
+
+}
