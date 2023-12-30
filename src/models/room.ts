@@ -1,11 +1,13 @@
-export  interface RoomProps {
+import { Amenity } from "./amenity"
+
+export  interface Room {
+    roomNumber: number,
     roomType: string,
     price: number,
-    amenities?: string[],
+    roomAmenities?: Amenity[],
     capacityOfAdults: number,
-    capacityOfChildrens: number,
-    imageSrc: string,
+    capacityOfChildren: number,
+    roomPhotoUrl: string,
     description?: string
-    starRating?: number
     availability?: boolean
 }
