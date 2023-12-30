@@ -1,40 +1,49 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, Rating, Stack, Typography } from "@mui/material"
-import TextIcon from "../common/text-icon/text-icon.component"
-import ChildrenIcon from "../../assets/icons/children-icon.component"
-import AdultsIcon from "../../assets/icons/adults-icon.component"
-import { RoomProps } from "../../models/room"
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, Stack, Tooltip, Typography } from "@mui/material"
+import TextIcon from "../../common/text-icon/text-icon.component"
+import ChildrenIcon from "../../../assets/icons/children-icon.component"
+import AdultsIcon from "../../../assets/icons/adults-icon.component"
+import { Room } from "../../../models/room"
 import React from "react"
+import { Amenity } from "../../../models/amenity"
+import { useNavigate } from "react-router-dom"
+import AmenityChip from "../../amenity/amenity.component"
 
-const RoomDetails: React.FC<RoomProps> = ({ capacityOfAdults = 2, capacityOfChildrens = 1, roomType = 'Standard', price = 22.6, amenities = ['Free-Wifi', 'SwimingPool'], imageSrc = 'hotelImg.jpg', description, starRating = 5 }) => {
+
+
+const RoomDetails: React.FC<{ room: Room }> = ({ room }) => {
+    const navigate = useNavigate();
+
+    const handleBookClick = () => {
+        navigate(`/checkout` , {state:room})
+    }
     return (<Card elevation={5} sx={{ maxWidth: '800px', overflow: 'hidden' }}>
         <CardMedia
             component="img"
-            image={imageSrc}
+            image={room.roomPhotoUrl}
             alt="Room image"
         />
         <CardContent>
             <Box sx={{ display: "flex", alignItems: 'center', justifyContent: 'space-between' }}>
                 <Typography sx={{ fontWeight: 'bold' }} gutterBottom variant="h5" component="div">
-                    {roomType}
+                    {room.roomType} Room
                 </Typography>
                 <Box>
                     <Typography gutterBottom sx={{ fontWeight: 'bold', fontFamily: 'Montserrat', fontSize: 20 }} variant="h4" component="div">
-                        {price % 1 === 0 ? `$${price}.00` : `$${price}0`}
+                        {room.price % 1 === 0 ? `$${room.price}.00` : `$${room.price}0`}
                     </Typography>
                     <Typography gutterBottom sx={{ fontFamily: 'Montserrat', lineHeight: 0 }} variant="body1" component="div">
                         night
                     </Typography>
                 </Box>
             </Box>
-            <Rating sx={{ marginBottom: 1 }} value={starRating} />
             {
-                description && <Box>
+                room.description && <Box>
                     <Typography gutterBottom sx={{ fontFamily: 'Montserrat' }} variant="h6" component="div">
                         About Room
                     </Typography>
                     <Box padding={1}>
                         <Typography gutterBottom sx={{ fontFamily: 'Montserrat' }} variant="body1" component="div">
-                            {description}
+                            {room.description}
                         </Typography>
                     </Box>
                 </Box>
@@ -44,8 +53,9 @@ const RoomDetails: React.FC<RoomProps> = ({ capacityOfAdults = 2, capacityOfChil
                     Amenties
                 </Typography>
                 <Stack direction="row" sx={{ p: 1, width: '70%', flexWrap: 'wrap', gap: 1 }}>
-                    {amenities.map((amenity, key) => {
-                        return <Chip label={amenity} key={key} />
+
+                    {room.roomAmenities?.map((amenity: Amenity, index) => {
+                      return  <AmenityChip key={index} description={amenity.description}  amenity={amenity.name} />
                     }
                     )}
                 </Stack>
@@ -55,12 +65,18 @@ const RoomDetails: React.FC<RoomProps> = ({ capacityOfAdults = 2, capacityOfChil
                     Room Size
                 </Typography>
                 <Stack direction={'row'} sx={{ p: 1, gap: 1 }}>
-                    <TextIcon text={`${capacityOfAdults} Adults`} icon={<AdultsIcon />} />
-                    <TextIcon text={`${capacityOfChildrens} Children`} icon={<ChildrenIcon />} />
+                    <TextIcon text={`${room.capacityOfAdults} Adults`} icon={<AdultsIcon />} />
+                    <TextIcon text={`${room.capacityOfChildren} Children`} icon={<ChildrenIcon />} />
                 </Stack>
             </Box>
             <CardActions sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2 }}>
-                <Button variant="contained" sx={{ width: '80%' }} >Book now</Button>
+                <Button
+                    variant="contained"
+                    onClick={handleBookClick}
+                    sx={{
+                        width: '80%',
+                        height: '50px'
+                    }} >Book now</Button>
             </CardActions>
         </CardContent>
     </Card>

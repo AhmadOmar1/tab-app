@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import RoomDetails from '../../components/cards/room-details.component';
+import RoomDetails from '../../components/cards/room/room-details.component';
 
 const roomType = 'Deluxe Room';
 const roomImage = '/hotelImg.jpg';
