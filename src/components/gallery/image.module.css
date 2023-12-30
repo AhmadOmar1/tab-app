@@ -1,0 +1,9 @@
+.customOriginal {
+    width: 100% !important;
+    max-height: 400px;
+}
+
+.customThumbnail {
+    min-height: 2000px !important;
+}
+                        
