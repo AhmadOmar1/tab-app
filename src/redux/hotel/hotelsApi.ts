@@ -44,13 +44,17 @@ export const hotelsApi = createApi({
     }),
     getHotelRoomsById: builder.query<Room[], { id: number; checkInDate: string; checkOutDate: string }>({
       query: ({ id, checkInDate, checkOutDate }) => `${HOTEL_URL}${id}/rooms?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`,
+      transformResponse: (response: Room[],_,{id}) => response.map((room) => ({ ...room, availability: true,hotelId: id})),
     }),
     getHotelAvilableRoomsById: builder.query<Room[], { id: number; checkInDate: string; checkOutDate: string }>({
       query: ({ id, checkInDate, checkOutDate }) => `${HOTEL_URL}${id}/available-rooms?checkInDate=${checkInDate}&CheckOutDate=${checkOutDate}`,
+      transformResponse: (response: Room[],_,{id}) => response.map((room) => ({ ...room, availability: true,hotelId: id})),
     }),
     getHotelReviewsById: builder.query<Review[] , {id:number}> ({
       query: ({id}) => `${HOTEL_URL}${id}/reviews`
     }),
+    
+    
   })
 });
 

@@ -9,7 +9,7 @@ import { toggleTheme } from '../../redux/theme-slice';
 import { Avatar, IconButton, Menu, MenuItem, Tooltip, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { logout } from '../../redux/auth-slice';
+import { logout } from '../../redux/user/auth-slice';
 
 const settings = ['Profile', 'Logout'];
 

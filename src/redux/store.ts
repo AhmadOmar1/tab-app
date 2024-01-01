@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import theme from "./theme-slice";
-import auth, { authMiddleware }  from './user/auth-slice'
+import auth, { authMiddleware } from './user/auth-slice'
 import searchFormValues from './hotel/hotels-slice';
 import { hotelsApi } from './hotel/hotelsApi';
 import { authApi } from './user/authApi';
+import { bookingApi } from './booking/booking-api';
 
 
 export const store = configureStore({
@@ -12,11 +13,17 @@ export const store = configureStore({
         auth,
         searchFormValues,
         [hotelsApi.reducerPath]: hotelsApi.reducer,
-        [authApi.reducerPath]: authApi.reducer
+        [authApi.reducerPath]: authApi.reducer,
+        [bookingApi.reducerPath]: bookingApi.reducer,
+
     },
     middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authMiddleware, hotelsApi.middleware, authApi.middleware)
-  
+        getDefaultMiddleware().concat(authMiddleware,
+            hotelsApi.middleware,
+            authApi.middleware,
+            bookingApi.middleware
+        )
+
 })
 
 export type RootState = ReturnType<typeof store.getState>

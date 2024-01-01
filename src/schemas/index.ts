@@ -37,7 +37,35 @@ export type SearchValidationSchemaType = yup.InferType<
 
 
 export const PersonalDetailsSchema = yup.object().shape({
-  firstName: yup.string().required("First Name is required*"),
-  lastName: yup.string().required("Last Name is required*"),
-  address: yup.string().required("Address is required*"),
+  firstName: yup.string()
+    .required("First Name is required*")
+    .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
+    .min(2, "First Name must be at least 2 characters"),
+  lastName: yup.string()
+    .required("Last Name is required*")
+    .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
+    .min(2, "Last Name must be at least 2 characters"),
+  address: yup.string()
+  .required("Address is required*")
+  .min(5, "Address must be at least 5 characters"),
+});
+
+
+export const PaymentlDetailsSchema = yup.object().shape({
+  cardNumber: yup.string()
+    .required("Card Number is required*")
+    .matches(/^[0-9]+$/, "Only numbers are allowed for this field ")
+    .min(16, "Card Number must be at least 16 characters"),
+  cardHolderName: yup.string()
+    .required("Card Name is required*")
+    .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
+    .min(2, "Card Name must be at least 2 characters"),
+    expiration: yup.string()
+    .required("Expiry Date is required*")
+    .matches(/^[0-9]+$/, "Only numbers are allowed for this field ")
+    .min(4, "Expiry Date must be at least 4 characters"),
+  cvv: yup.string()
+    .required("CVV is required*")
+    .matches(/^[0-9]+$/, "Only numbers are allowed for this field ")
+    .min(3, "CVV must be at least 3 characters"),
 });
