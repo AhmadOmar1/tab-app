@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Divider, FormControl, Paper, Rating, TextField, Typography, useTheme } from "@mui/material"
+import { Box, Button, ButtonGroup, Divider, Paper, Rating, Typography, useTheme } from "@mui/material"
 import { useSearchParams } from "react-router-dom"
 import { useGetHotelAvilableRoomsByIdQuery, useGetHotelByIdQuery, useGetHotelGalleryByIdQuery, useGetHotelReviewsByIdQuery, useGetHotelRoomsByIdQuery } from "../../redux/hotel/hotelsApi";
 import Loading from "../../components/common/loading/loading.component";
@@ -13,70 +13,59 @@ import { Review } from "../../models/review"
 import ReviewList from "../../components/cards/reviews/reviews-list.component";
 import { useState } from "react";
 import AddReview from "../../components/cards/reviews/add-review.component";
-import { useFormik } from "formik";
 import dayjs from "dayjs";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import SearchRooms from "./components/search-rooms.component";
+import { ReservationData } from "../../models/search-reservation";
+import { useDispatch } from "react-redux";
+import { updateCheckDates } from "../../redux/hotel/hotels-slice";
 
 const Hotel = () => {
   let [searchParams,] = useSearchParams();
-  const [acitve, setActive] = useState('Reviews')
-  const [activeRooms, setActiveRooms] = useState('allRooms');
+  const dispatch = useDispatch();
   const theme = useTheme();
   const hotelId = Number(searchParams.get("hotelId"));
-  console.log("hotelId", hotelId);
+  const [acitve, setActive] = useState('Reviews')
+  const [activeRooms, setActiveRooms] = useState('allRooms');
 
 
+  const [reservationData, setReservationData] = useState<ReservationData>({
+    checkin: dayjs(),
+    checkout: dayjs().add(1, 'day'),
+  });
 
   let images;
-  let hotel: HotelModel | undefined, error;
+  let hotel: HotelModel | undefined;
   let avilableRooms;
   let allRooms;
   let reviews: Review[] = [];
 
-
-
-  const formik = useFormik({
-    initialValues: {
-      checkin: dayjs(),
-      checkout: dayjs().add(1, 'day'),
-    },
-    onSubmit: (values) => {
-      try {
-        const queryParams = {
-          checkin: dayjs(values.checkin).format('YYYY-MM-DD'),
-          checkout: dayjs(values.checkout).format('YYYY-MM-DD'),
-        }
-        console.log("queryParams", queryParams);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  });
-
+  const checkInDate = reservationData.checkin.format('YYYY-MM-DD');
+  const checkOutDate = reservationData.checkout.format('YYYY-MM-DD');
   try {
     const { data, error: queryError, isLoading } = useGetHotelByIdQuery({ id: hotelId, includeRooms: true });
     const { data: imageData, error: imagesError, isLoading: imagesLoading } = useGetHotelGalleryByIdQuery({ id: hotelId });
     const { data: reviewData, error: reviewError, isLoading: reviewsLoading } = useGetHotelReviewsByIdQuery({ id: hotelId });
-
-    const checkin = dayjs(formik.values.checkin).format('YYYY-MM-DD');
-    const checkout = dayjs(formik.values.checkout).format('YYYY-MM-DD');
-
-    const { data: roomsData, error: avilableRoomError, isLoading: avilableRoomLoading } = useGetHotelAvilableRoomsByIdQuery({ id: hotelId, checkInDate: checkin, checkOutDate: checkout });
-
-    const { data: roomsResponse, error: allRoomsError, isLoading: allRoomLoading } = useGetHotelRoomsByIdQuery({ id: hotelId, checkInDate: checkin, checkOutDate: checkout });
+    const { data: roomsData, error: avilableRoomError, isLoading: avilableRoomLoading } = useGetHotelAvilableRoomsByIdQuery({ id: hotelId, checkInDate: checkInDate, checkOutDate: checkOutDate });
+    const { data: roomsResponse, error: allRoomsError, isLoading: allRoomLoading } = useGetHotelRoomsByIdQuery({ id: hotelId, checkInDate: checkInDate, checkOutDate: checkOutDate });
 
     avilableRooms = roomsData || [];
     allRooms = roomsResponse || [];
     images = imageData || [];
     hotel = data || undefined;
     reviews = reviewData || [];
-    error = queryError;
     if (isLoading) return <Loading />;
   } catch (e) {
     console.error("Error fetching hotel data:", e);
-    error = e;
   }
+
+  const handleCheckDate = (values: ReservationData) => {
+    setReservationData(values);
+    console.log(values.checkin.format('YYYY-MM-DD'), values.checkout.format('YYYY-MM-DD'));
+    dispatch(updateCheckDates({
+      checkin: values.checkin.format('YYYY-MM-DD'),
+      checkout: values.checkout.format('YYYY-MM-DD')
+    }));
+  };
 
 
   return <Paper sx={{
@@ -94,7 +83,6 @@ const Hotel = () => {
             display: 'flex',
             flexDirection: 'column',
             gap: 5,
-
           }}>
             <Box className={style.hotelHeader}>
               <Box className={style.hotelRating} sx={{ mb: 1 }}>
@@ -121,7 +109,6 @@ const Hotel = () => {
           </Box>
         </Box>
 
-
         <Divider sx={{ width: '90%' }} />
         <Typography variant="h5" component="div">What this place offers</Typography>
 
@@ -136,17 +123,11 @@ const Hotel = () => {
             Location {' '}
             <Typography variant="body1" component="span">{hotel?.location}</Typography>
           </Typography>
-
         </>
-
-
         <Box>
           <MapLocation lng={hotel?.longitude ?? 0} lat={hotel?.latitude ?? 0} />
         </Box>
-
         <Typography variant="h5" component="div">Hotel Rooms</Typography>
-
-
         <Box sx={{
           width: '100%',
           display: 'flex',
@@ -161,10 +142,10 @@ const Hotel = () => {
               sx={{
                 paddingBlock: 5,
                 width: 200,
-                backgroundColor: activeRooms === 'allRooms' ?  theme.palette.primary.main : '',
+                backgroundColor: activeRooms === 'allRooms' ? theme.palette.primary.main : '',
                 color: activeRooms === 'allRooms' ? '#000' : '',
                 '&:hover': {
-                  backgroundColor: activeRooms === 'allRooms' ?  theme.palette.primary.main : '',
+                  backgroundColor: activeRooms === 'allRooms' ? theme.palette.primary.main : '',
                 }
               }}> All Rooms</Button>
             <Button onClick={() => setActiveRooms('availableRooms')}
@@ -179,7 +160,7 @@ const Hotel = () => {
               }}>Available Rooms</Button>
           </ButtonGroup>
         </Box>
-        {activeRooms === 'allRooms' && <RoomList rooms={allRooms ?? []} />}
+        {activeRooms === 'allRooms' && <RoomList disabled={true} rooms={allRooms ?? []} />}
         {activeRooms === 'availableRooms' && <>
           <Box sx={{
             display: 'flex',
@@ -189,76 +170,11 @@ const Hotel = () => {
             justifyContent: 'center',
 
           }}>
-            <Paper elevation={10} sx={{
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              p: 2,
-              gap: 2,
-              width: '400px',
-              boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.75)',
-
-            }}>
-
-              <Typography variant="h6" component="div">Search for available rooms</Typography>
-              <form onSubmit={formik.handleSubmit} >
-                <Box sx={{
-                  display: 'flex',
-                  gap: 2,
-                }}>
-                  <FormControl
-                    fullWidth
-                    sx={{ minWidth: "150px" }}
-                    onChange={formik.handleChange}
-                  >
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        label="Check in"
-                        name="checkin"
-                        value={formik.values.checkin}
-                        minDate={dayjs()}
-                        sx={{
-                          "& fieldset": { border: "solid 1px" },
-                        }}
-                        onChange={(date) => {
-                          const checkinDate = dayjs(date);
-                          formik.setFieldValue("checkin", checkinDate.format());
-                        }}
-                      />
-                    </LocalizationProvider>
-                  </FormControl>
-                  <FormControl
-                    fullWidth
-                    sx={{ minWidth: "150px" }}
-                    onChange={formik.handleChange}
-                  >
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        label="Check Out"
-                        name="checkout"
-                        value={formik.values.checkout}
-                        minDate={dayjs(formik.values.checkin).add(1, 'day')}
-                        sx={{
-                          "& fieldset": { border: "solid 1px" },
-                        }}
-                        onChange={(date) => {
-                          const checkoutDate = dayjs(date);
-                          formik.setFieldValue("checkout", checkoutDate.toISOString());
-                        }}
-                      />
-                    </LocalizationProvider>
-                  </FormControl>
-
-                </Box>
-              </form>
-
-            </Paper>
+            <SearchRooms onSubmit={handleCheckDate} />
           </Box>
           <RoomList rooms={avilableRooms ?? []} />
         </>
         }
-
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
