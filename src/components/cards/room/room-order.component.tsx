@@ -3,14 +3,13 @@ import { Box, Button, Card, CardContent, CardMedia, Chip, Divider, Paper, Rating
 import { Room } from '../../../models/room'
 import { useNavigate } from 'react-router-dom'
 
-
-
 type RoomOrderProps = {
     room: Room,
     hotelName: string,
     hotelLocation: string,
     checkIn: string,
     checkOut: string,
+    nights: number,
 }
 
 
@@ -20,12 +19,8 @@ const StyledBox = styled(Box)`
     padding: 1rem;
 `
 
-const RoomOrder: React.FC<RoomOrderProps> = ({ room, checkIn, checkOut, hotelLocation, hotelName }) => {
+const RoomOrder: React.FC<RoomOrderProps> = ({ room, checkIn, checkOut, hotelLocation, hotelName , nights }) => {
 
-
-    const checkInDate = new Date(checkIn);
-    const checkOutDate = new Date(checkOut);
-    const nights = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 3600 * 24));
     const totalPrice = nights * room.price;
 
     const navigate = useNavigate();
@@ -60,13 +55,16 @@ const RoomOrder: React.FC<RoomOrderProps> = ({ room, checkIn, checkOut, hotelLoc
                         flex: '1 0 auto',
                         pt: 0,
                     }}>
-                 
+                        <Typography component="div" variant="body2">
+                            {hotelName}
+                        </Typography>
                         <Box sx={{
                             display: 'flex',
                             justifyContent: 'space-between',
                         }}>
+
                             <Typography variant="body1" component="div">
-                                Standard
+                                {room.roomType}
                             </Typography>
                             <Typography variant="body1" component="div">
                                 ${room.price}
@@ -116,7 +114,6 @@ const RoomOrder: React.FC<RoomOrderProps> = ({ room, checkIn, checkOut, hotelLoc
                             </Typography>
                         </StyledBox>
                         <Divider />
-
                         <StyledBox >
                             <Typography variant="body1" component="div">
                                 Rooms
@@ -151,15 +148,11 @@ const RoomOrder: React.FC<RoomOrderProps> = ({ room, checkIn, checkOut, hotelLoc
                             <Typography variant="h6" component="div">
                                 Price Details
                             </Typography>
-                            <Typography variant="h6" component="div">
-
-                            </Typography>
                         </Box>
-
                         <StyledBox >
                             <Typography variant="body1" component="div">
 
-                                ${room.price} x {nights}{'nights'}
+                                ${room.price} x {nights} {'nights'}
                             </Typography>
                             <Typography variant="body1" component="div">
                                 {totalPrice}

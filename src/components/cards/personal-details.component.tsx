@@ -1,27 +1,22 @@
 import React from 'react';
-import { Box, Card, CardContent, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import { PersonalDetailsSchema } from './../../schemas/index';
+import { PersonalDetailsProps } from '../../models/personal-details';
 
-interface PersonalDetailsProps {
-    firstName?: string;
-    lastName?: string;
-    address?: string;
-}
 
-const PersonalDetails: React.FC<{ onSubmit: (values: PersonalDetailsProps) => void }> = ({ onSubmit }) => {
+const PersonalDetails: React.FC<{
+    onSubmit: (values: PersonalDetailsProps) => void,
+    values: PersonalDetailsProps
+}> = ({ onSubmit , values }) => {
     const formik = useFormik({
         validationSchema: PersonalDetailsSchema,
-        initialValues: {
-            firstName: '',
-            lastName: '',
-            address: '',
-        },
+        initialValues: values,
         onSubmit: (values) => {
             onSubmit(values);
         },
-    });
 
+    });
     return (
         <Card sx={{ width: 400 }}>
             <CardContent >
@@ -34,6 +29,7 @@ const PersonalDetails: React.FC<{ onSubmit: (values: PersonalDetailsProps) => vo
                             placeholder='First Name'
                             fullWidth
                             name="firstName"
+                            inputProps={{ maxLength: 30 }}
                             value={formik.values.firstName}
                             onChange={formik.handleChange}
                             error={formik.touched.firstName && Boolean(formik.errors.firstName)}
@@ -44,6 +40,7 @@ const PersonalDetails: React.FC<{ onSubmit: (values: PersonalDetailsProps) => vo
                             fullWidth
                             name="lastName"
                             value={formik.values.lastName}
+                            inputProps={{ maxLength: 30 }}
                             onChange={formik.handleChange}
                             error={formik.touched.lastName && Boolean(formik.errors.lastName)}
                             helperText={formik.touched.lastName && formik.errors.lastName}
@@ -57,6 +54,20 @@ const PersonalDetails: React.FC<{ onSubmit: (values: PersonalDetailsProps) => vo
                             error={formik.touched.address && Boolean(formik.errors.address)}
                             helperText={formik.touched.address && formik.errors.address}
                         /></Box>
+
+                    <Box sx={{ mb: 2 }}>
+                        <div>
+                            <Button
+                                variant="contained"
+                                type="submit"
+                                sx={{ mt: 2, mr: 1 }}
+                                disabled={!formik.isValid}
+                            >
+                                {'Continue'}
+                            </Button>
+                     
+                        </div>
+                    </Box>
                 </form>
             </CardContent>
         </Card>
