@@ -1,7 +1,7 @@
 import { Amenity } from "./amenity"
 
 export  interface Room {
-    roomNumber: number,
+    roomNumber: string,
     roomType: string,
     price: number,
     roomAmenities?: Amenity[],
@@ -9,5 +9,6 @@ export  interface Room {
     capacityOfChildren: number,
     roomPhotoUrl: string,
     description?: string
-    availability?: boolean
+    availability?: boolean,
+    hotelId?: number
 }

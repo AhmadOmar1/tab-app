@@ -5,14 +5,16 @@ import RoomCard from './room-card.component';
 import CustomPopup from '../../popups/popup.component';
 import RoomDetails from './room-details.component';
 
+
 type RoomProps = {
     rooms: Room[],
+    disabled?: boolean,
+
 }
 
-const RoomList: React.FC<RoomProps> = ({ rooms }) => {
+const RoomList: React.FC<RoomProps> = ({ rooms, disabled,}) => {
     const [dialogState, setDialogState] = useState(false);
     const [selectedRoom, setSelectedCity] = useState<Room | null>(null);
-
     const handleDialogOpen = (room: Room) => {
         setSelectedCity(room);
         setDialogState(true);
@@ -30,6 +32,7 @@ const RoomList: React.FC<RoomProps> = ({ rooms }) => {
         {rooms?.map((room: Room) => {
             return (
                 <RoomCard
+                    disabled={disabled ?? false}
                     key={room.roomNumber}
                     room={room}
                     onClick={() => handleDialogOpen(room)}

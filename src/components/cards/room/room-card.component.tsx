@@ -1,11 +1,12 @@
-import { Box, Card, CardContent, CardMedia, Stack, Typography } from "@mui/material"
+import { Box, Card, CardContent, CardMedia, Stack, Typography, makeStyles } from "@mui/material"
 import TextIcon from "../../common/text-icon/text-icon.component"
 import ChildrenIcon from "../../../assets/icons/children-icon.component"
 import { Room } from "../../../models/room";
 import AdultsIcon from "../../../assets/icons/adults-icon.component";
 import React from "react";
 
-const RoomCard: React.FC<{ room: Room , onClick: () => void }> = ({ room,onClick }) => {
+
+const RoomCard: React.FC<{ room: Room, onClick: () => void, disabled: boolean }> = ({ room, onClick, disabled }) => {
 
     return <Card
         elevation={5}
@@ -14,6 +15,8 @@ const RoomCard: React.FC<{ room: Room , onClick: () => void }> = ({ room,onClick
             cursor: 'pointer',
             width: '500px',
             minWidth: '400px',
+            opacity: disabled ? 0.7 : 1,
+            pointerEvents: disabled ? 'none' : 'auto',
         }}
         onClick={onClick}
     >
@@ -45,8 +48,8 @@ const RoomCard: React.FC<{ room: Room , onClick: () => void }> = ({ room,onClick
                 </Box>                    <Box></Box>
 
                 <Stack sx={{ gap: 1 }}>
-                    <TextIcon  variant="body1" text={`${room.capacityOfAdults} Adults`} icon={<AdultsIcon height="20"  width="20"/>} />
-                    <TextIcon variant="body1" text={`${room.capacityOfChildren} Children`} icon={<ChildrenIcon height="20"  width="20"/>} />
+                    <TextIcon variant="body1" text={`${room.capacityOfAdults} Adults`} icon={<AdultsIcon height="20" width="20" />} />
+                    <TextIcon variant="body1" text={`${room.capacityOfChildren} Children`} icon={<ChildrenIcon height="20" width="20" />} />
                 </Stack>
             </CardContent>
         </Box>

@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, Stack, Tooltip, Typography } from "@mui/material"
+import { Box, Button, Card, CardActions, CardContent, CardMedia,  Stack,   Typography } from "@mui/material"
 import TextIcon from "../../common/text-icon/text-icon.component"
 import ChildrenIcon from "../../../assets/icons/children-icon.component"
 import AdultsIcon from "../../../assets/icons/adults-icon.component"
