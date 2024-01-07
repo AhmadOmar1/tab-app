@@ -4,7 +4,7 @@ import { TrendingDestination as CityProps, } from '../../../models/trending-dest
 import CustomPopup from '../../../components/popups/popup.component';
 import CityCard from '../../../components/cards/city/city-card.component';
 import CityDetailsComponent from '../../../components/cards/city/city-details.component';
-import { useGetTrendingDestinationQuery } from '../../../redux/hotel/hotelsApi';
+import { useGetTrendingDestinationQuery } from '../../../redux/user/hotel/hotelsApi';
 import Loading from '../../../components/common/loading/loading.component';
 
 

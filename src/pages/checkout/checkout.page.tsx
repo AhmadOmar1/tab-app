@@ -18,10 +18,9 @@ import { PaymentDetailsProps } from '../../models/payment-details';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { Room } from '../../models/room';
-import { useGetHotelByIdQuery } from '../../redux/hotel/hotelsApi';
-import { useBookMutation } from '../../redux/booking/booking-api';
-import { Alert } from '@mui/material';
-
+import { useGetHotelByIdQuery } from '../../redux/user/hotel/hotelsApi';
+import { useBookMutation } from '../../redux/user/booking/booking-api';
+ 
 
 
 export default function CheckOut() {
@@ -41,7 +40,7 @@ export default function CheckOut() {
   const checkInDate = new Date(checkin);
   const checkOutDate = new Date(checkout);
   const nights = Math.ceil((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 3600 * 24));
-  const totalPrice = nights * room.price;
+  const totalPrice = nights * (room.price as number);
 
   const hotelId = room.hotelId as number;
 
@@ -91,8 +90,8 @@ export default function CheckOut() {
         totalCost: totalPrice,
         customerName: personalData.firstName + ' ' + personalData.lastName,
         hotelName: hotelData?.hotelName as string,
-        roomNumber: room.roomNumber,
-        roomType: room.roomType,
+        roomNumber: room.roomNumber as string,
+        roomType: room.roomType as string,
         paymentMethod: 'visa',
         bookingStatus: 'Confirmed',
       });
@@ -176,8 +175,6 @@ export default function CheckOut() {
       )}
     </Box>
     <RoomOrder nights={nights} checkIn={checkin} checkOut={checkout} hotelLocation={hotelData?.location as string} hotelName={hotelData?.hotelName as string} room={room} />
-
   </Paper>
-
   );
 }
