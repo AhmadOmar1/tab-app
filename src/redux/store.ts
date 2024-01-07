@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import theme from "./theme-slice";
-import auth, { authMiddleware } from './user/auth-slice'
-import searchFormValues from './hotel/hotels-slice';
-import { hotelsApi } from './hotel/hotelsApi';
-import { authApi } from './user/authApi';
-import { bookingApi } from './booking/booking-api';
+import auth, { authMiddleware } from './user/auth/auth-slice'
+import searchFormValues from './user/hotel/hotels-slice';
+import { hotelsApi } from './user/hotel/hotelsApi';
+import { authApi } from './user/auth/authApi';
+import { bookingApi } from './user/booking/booking-api';
+import { cityApi } from './admin/city/city-api';
+import { hotelAdminApi } from './admin/hotel/hotel-api';
+import { roomApi } from './admin/room/room-api';
 
 
 export const store = configureStore({
@@ -15,13 +18,19 @@ export const store = configureStore({
         [hotelsApi.reducerPath]: hotelsApi.reducer,
         [authApi.reducerPath]: authApi.reducer,
         [bookingApi.reducerPath]: bookingApi.reducer,
+        [cityApi.reducerPath]: cityApi.reducer,
+        [hotelAdminApi.reducerPath]: hotelAdminApi.reducer,
+        [roomApi.reducerPath]: roomApi.reducer,
 
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(authMiddleware,
             hotelsApi.middleware,
             authApi.middleware,
-            bookingApi.middleware
+            bookingApi.middleware,
+            cityApi.middleware,
+            hotelAdminApi.middleware,
+            roomApi.middleware,
         )
 
 })

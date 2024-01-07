@@ -8,6 +8,10 @@ import Login from './pages/login/login.page';
 import NotFound from './pages/not-found/not-found.page';
 import { Route } from './models/routes';
 import Forbidden from './pages/forbidden/forbidden.page';
+import CitiesAdmin from './pages/admin/cities/cities-admin.page';
+import HotelsAdmin from './pages/admin/hotels/hotels-admin.page';
+import RoomsAdmin from './pages/admin/rooms/rooms-admin.page';
+
 
 const routes: Route[] = [
   {
@@ -21,6 +25,26 @@ const routes: Route[] = [
     element: <Admin />,
     requireAuth: true,
     requireAdmin: true,
+    children: [
+      {
+        path: 'hotels',
+        element: <HotelsAdmin />,
+        requireAuth: true,
+        requireAdmin: true,
+      },
+      {
+        path: 'rooms',
+        element: <RoomsAdmin/>,
+        requireAuth: true,
+        requireAdmin: true,
+      },
+      {
+        path: 'cities',
+        element: <CitiesAdmin />,
+        requireAuth: true,
+        requireAdmin: true,
+      }
+    ]
   },
   {
     path: '/checkout',
@@ -64,7 +88,7 @@ const routes: Route[] = [
     requireAuth: true,
     requireAdmin: false,
   },
-  
+
   {
     path: '*',
     element: <NotFound />,

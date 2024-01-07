@@ -1,6 +1,6 @@
 import { Middleware, createSelector, createSlice } from "@reduxjs/toolkit";
-import { getValue, removeValue, storeValue } from "../../utils/storage.util";
-import { User } from "../../models/user";
+import { getValue, removeValue, storeValue } from "../../../utils/storage.util";
+import { User } from "../../../models/user";
 
 type AuthState = {
   user: User | null;

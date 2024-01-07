@@ -1,11 +1,11 @@
 import { createApi} from '@reduxjs/toolkit/query/react';
-import { TrendingDestination } from '../../models/trending-destination';
-import { RecentlyVisitedHotel } from '../../models/recently-visted';
-import { Hotel } from '../../models/hotel';
-import { Amenity } from '../../models/amenity';
-import { Image } from '../../models/image';
-import { Room } from '../../models/room';
-import { Review } from '../../models/review';
+import { TrendingDestination } from '../../../models/trending-destination';
+import { RecentlyVisitedHotel } from '../../../models/recently-visted';
+import { Hotel } from '../../../models/hotel';
+import { Amenity } from '../../../models/amenity';
+import { Image } from '../../../models/image';
+import { Room } from '../../../models/room';
+import { Review } from '../../../models/review';
 
 const DEALS_URL = 'api/home/featured-deals';
 const RECENTLY_VISTED_URL = 'api/home/users/'; 
@@ -14,7 +14,7 @@ const AMENITY_URL = 'api/search-results/amenities'
 const SEARCH_URL = 'api/home/search';
 const HOTEL_URL = 'api/hotels/';
 
-import { baseQuery } from '../api-config';
+import { baseQuery } from '../../api-config';
 
 export const hotelsApi = createApi({
   reducerPath: 'hotelsApi',

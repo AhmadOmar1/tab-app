@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import {baseQuery} from '../api-config';
+import {baseQuery} from '../../api-config';
 const loginUrl = "api/auth/authenticate";
 
 
@@ -18,7 +18,6 @@ export const authApi = createApi({
                 method: 'POST',
                 body: { ...credentials },
             }),
-      
         }),
     }),
 });
