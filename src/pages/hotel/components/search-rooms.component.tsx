@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { updateCheckDates } from "../../../redux/hotel/hotels-slice";
+import { updateCheckDates } from "../../../redux/user/hotel/hotels-slice";
 
 type SearchRoomsProps = {
     onSubmit: (values:
