@@ -1,0 +1,217 @@
+import React from 'react';
+import { Container, Box, TextField, Button, Typography, CardContent, Stack, Select, MenuItem, InputLabel } from '@mui/material';
+import { useFormik } from 'formik';
+import { useAddHotelMutation } from '../../../../redux/admin/hotel/hotel-api';
+import { useGetCitiesQuery } from '../../../../redux/admin/city/city-api';
+import { AddHotelSchema } from '../../../../schemas';
+import CustomAlert from '../../../../components/common/alert/custom-alert.component';
+import { AddHotel as AddHotelModel } from '../../../../models/hotel';
+
+export const hotelTypes = [
+    { id: 0, type: 'Default Hotel' },
+    { id: 1, type: 'Luxury Hotel' },
+    { id: 2, type: 'Budget Hotel' },
+    { id: 3, type: 'Boutique Hotel' },
+    { id: 4, type: 'Resort' }
+];
+
+const AddHotel: React.FC = () => {
+    const [addHotelMutation, { isLoading }] = useAddHotelMutation();
+    const [isError, setIsError] = React.useState(false);
+    const [isSuccess, setIsSuccess] = React.useState(false);
+
+    const { data } = useGetCitiesQuery();
+
+    const cities = data?.map((city) => ({ id: city.id, city: city.name }));
+
+
+
+
+    const formik = useFormik({
+        validationSchema: AddHotelSchema,
+        initialValues: {
+            name: '',
+            description: '',
+            hotelType: 0,
+            starRating: 0,
+            latitude: 0,
+            longitude: 0,
+            cityId: 1,
+        },
+        onSubmit: async (values) => {
+            try {
+                const hotel: AddHotelModel = {
+                    name: values.name,
+                    description: values.description,
+                    hotelType: values.hotelType,
+                    starRating: values.starRating,
+                    latitude: values.latitude,
+                    longitude: values.longitude,
+                };
+                await addHotelMutation({ cityId: values.cityId, hotel: hotel }).unwrap();
+
+                setIsSuccess(true);
+                setIsError(false);
+                formik.resetForm();
+
+            } catch (error) {
+                console.log(error);
+                setIsError(true);
+                setIsSuccess(false);
+            }
+        },
+    });
+
+
+    return (<>
+        <CustomAlert
+            description='Hotel added successfully'
+            isOpen={isSuccess}
+            setIsOpen={(value) => setIsSuccess(value)}
+            title={'Success'}
+            color='success'
+        />
+        <CustomAlert
+            description='Something went wrong'
+            isOpen={isError}
+            setIsOpen={(value) => setIsError(value)}
+            title='Error'
+            color='error'
+        />
+        <Container maxWidth="sm">
+            <CardContent >
+                <Typography variant="h5" component="div">
+                    Add Hotel
+                </Typography>
+                <Box component={'form'} onSubmit={formik.handleSubmit}>
+                    <TextField
+                        fullWidth
+                        id="name"
+                        name="name"
+                        label="Hotel Name"
+                        variant="outlined"
+                        margin="normal"
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
+                        helperText={formik.errors.name}
+                        error={formik.touched.name && Boolean(formik.errors.name)}
+                    />
+                    <TextField
+                        fullWidth
+                        id="description"
+                        name="description"
+                        label="Hotel Description"
+                        variant="outlined"
+                        margin="normal"
+                        value={formik.values.description}
+                        onChange={formik.handleChange}
+                        multiline
+                        rows={3}
+                        helperText={formik.errors.description}
+                        error={formik.touched.description && Boolean(formik.errors.description)}
+                    />
+                    <Stack direction={'row'} spacing={1}>
+
+                        <TextField
+                            fullWidth
+                            type="number"
+                            name='starRating'
+                            id="outlined-basic"
+                            label="Star rating"
+                            variant="outlined"
+                            value={formik.values.starRating}
+                            onChange={formik.handleChange}
+                            helperText={formik.errors.starRating}
+                            error={formik.touched.starRating && Boolean(formik.errors.starRating)}
+                        />
+                    </Stack>
+                    <Stack direction={'row'} spacing={1} marginTop={1}>
+                        <TextField
+                            fullWidth
+                            type="number"
+                            name='latitude'
+                            id="outlined-basic"
+                            label="latitude"
+                            variant="outlined"
+                            value={formik.values.latitude}
+                            onChange={formik.handleChange}
+                            helperText={formik.errors.latitude}
+                            error={formik.touched.latitude && Boolean(formik.errors.latitude)}
+                        />
+                        <TextField
+                            fullWidth
+                            type="number"
+                            name='longitude'
+                            id="outlined-basic"
+                            label="longitude"
+                            variant="outlined"
+                            value={formik.values.longitude}
+                            onChange={formik.handleChange}
+                            helperText={formik.errors.longitude}
+                            error={formik.touched.longitude && Boolean(formik.errors.longitude)}
+                        />
+                    </Stack>
+                    <Stack direction={'row'} justifyContent={'space-around'} marginTop={1} >
+                        <Box>
+                            <InputLabel id="cityId">City</InputLabel>
+                            <Select
+                                labelId="cityId"
+                                id="cityId"
+                                name='cityId'
+                                value={formik.values.cityId}
+                                onChange={formik.handleChange}
+                                sx={{ m: 1, width: 195 }}
+                                fullWidth
+                            >
+                                {cities?.map((city, index) => (
+                                    <MenuItem key={index} value={city.id}>
+                                        {city.city}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </Box>
+                        <Box>
+                            <InputLabel id="hotelType">Hotel Type</InputLabel>
+                            <Select
+                                labelId="hotelType"
+                                id="hotelType"
+                                name='hotelType'
+                                value={formik.values.hotelType}
+                                onChange={formik.handleChange}
+                                sx={{ m: 1, width: 195 }}
+                                fullWidth
+                            >
+                                {
+                                    hotelTypes.map((hotelType, index) => (
+                                        <MenuItem key={index} value={hotelType.id}>
+                                            {hotelType.type}
+                                        </MenuItem>
+                                    ))
+                                }
+                            </Select>
+                        </Box>
+                    </Stack>
+
+
+
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                        sx={{ mt: 3, mb: 2 }}
+                        disabled={
+                            !formik.dirty
+                        }
+                    >
+                        {isLoading ? 'Loading...' : 'Add Hotel'}
+                    </Button>
+                </Box>
+            </CardContent>
+        </Container>
+    </>
+    );
+};
+
+
+export default AddHotel;
