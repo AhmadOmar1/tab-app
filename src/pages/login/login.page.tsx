@@ -6,12 +6,12 @@ import Container from '@mui/material/Container';
 import LockIcon from '../../assets/icons/lock-icon.component';
 import { InputAdornment, Paper, useTheme, Button } from '@mui/material';
 import UserIcon from '../../assets/icons/user-icon.component';
-import { login as loginReducer } from '../../redux/user/auth-slice';
+import { login as loginReducer } from '../../redux/user/auth/auth-slice';
 import { loginValidationSchema } from '../../schemas';
 import { useNavigate } from 'react-router-dom';
 import EyeIcon from '../../assets/icons/eye-icon.component';
 import { useEffect,  useState } from 'react';
-import { useLoginMutation } from '../../redux/user/authApi';
+import { useLoginMutation } from '../../redux/user/auth/authApi';
 import Loading from '../../components/common/loading/loading.component';
 import { useDispatch } from 'react-redux';
 export default function Login() {
@@ -38,8 +38,7 @@ export default function Login() {
             const tokenPayload = JSON.parse(atob(tokenPayloadEncoded));    
             dispatch(loginReducer({ user:tokenPayload, token: response.authentication }));
             if (response.userType === 'Admin') {
-                console.log(" response : ", response , "  : ", response.userType);
-                navigate('/admin');
+                navigate('/admin/cities');
             } else if (response.userType === 'User') {
                 navigate('/home');
             }

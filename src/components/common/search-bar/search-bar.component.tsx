@@ -1,46 +1,72 @@
-import { Container, InputAdornment, TextField } from "@mui/material";
-import { useState } from "react";
+import { InputAdornment, TextField, TextFieldProps, useTheme } from "@mui/material";
+import { useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import style from './search-bar.module.css';
 
-interface SearchBarProps {
-  placeholder?: string;
-  onSearch: (searchTerm: string) => void;
-  width?: string;
-  red?:boolean;
-}
+const SearchBar: React.FC<TextFieldProps & { width?: number }> = (props) => {
+  const [expanded, setExpanded] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const theme = useTheme();
 
-const SearchBar: React.FC<SearchBarProps> = ({red, placeholder = 'Search...', onSearch, width = '700px' }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleClick = () => {
+    setExpanded(true);
   };
 
-  const handleIconClick = () => {
-    onSearch(searchTerm);
+  const handleBlur = () => {
+    setExpanded(false);
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 10 }}>
-      <TextField
-        id="search"
-        sx={{ width }}
-        type="search"
-        placeholder={placeholder}
-        value={searchTerm}
-        onChange={handleChange}
-        InputProps={{
-          style: { borderRadius: '50px' }
-          ,
-          endAdornment: (
-            <InputAdornment position="end" >
-              <SearchIcon fontSize="large" style={{cursor:"pointer"}} className={red ? style.searchIcon : ''} onClick={handleIconClick} />
-            </InputAdornment>
-          ),
-        }}
-      />
-    </Container>
+    <TextField
+      id="search"
+      sx={{
+        width: expanded ? '350px' : '300px',
+        borderRadius: '50px',
+        border: '1px solid',
+        transition: 'all 0.2s ease-in-out',
+        borderColor: theme.palette.primary.main,
+        '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            border: 'none',
+          },
+          '&:hover fieldset': {
+            border: 'none',
+          },
+          '&.Mui-focused fieldset': {
+            border: 'none',
+          },
+        },
+      }}
+      type="search"
+      onClick={handleClick}
+      onBlur={handleBlur}
+      {...props}
+      InputProps={{
+        endAdornment: (
+          <InputAdornment position="end" >
+            <SearchIcon fontSize="large" sx={{
+              cursor: 'pointer',
+              color: theme.palette.primary.contrastText,
+              backgroundColor: theme.palette.primary.main,
+              borderRadius: '50%',
+              transition: 'all 0.2s ease-in-out',
+              '&:hover': {
+                backgroundColor: theme.palette.primary.dark,
+                transform: 'rotate(180deg)',
+              },
+              '&:active': {
+                backgroundColor: theme.palette.primary.light,
+                transform: 'rotate(180deg)',
+              },
+            }}
+              className={style.searchIcon}
+            />
+          </InputAdornment>
+        ),
+      }}
+      inputRef={inputRef}
+      autoFocus={expanded}
+    />
   );
 };
 

@@ -3,5 +3,6 @@ export interface Route {
     element: React.ReactElement;
     requireAuth: boolean;
     requireAdmin: boolean;
+    children?:Route[];
   }
   

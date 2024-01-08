@@ -1,18 +1,21 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
 import { Route } from '../models/routes';
+import { getValue } from '../utils/storage.util';
 
 
 
 const PrivateRoute: React.FC<Route> = ({ element, requireAuth, requireAdmin }) => {
-    const auth = useSelector((state: RootState) => state.auth);
+    const token = getValue('token');
+    
+    const [, tokenPayloadEncoded] = token?.split('.') ?? [];
+    const user = JSON.parse(atob(tokenPayloadEncoded));
 
     const isAdmin = () => {
-        return auth.user?.userType === 'Admin' || false;
+        return user?.userType === 'Admin' || false;
     };
-    if (requireAuth && !auth.token) {
+
+    if (requireAuth && !token) {
         return <Navigate to={'/login'} />;
     }
 

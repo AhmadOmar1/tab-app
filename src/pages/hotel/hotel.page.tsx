@@ -1,6 +1,6 @@
 import { Box, Button, ButtonGroup, Divider, Paper, Rating, Typography, useTheme } from "@mui/material"
 import { useSearchParams } from "react-router-dom"
-import { useGetHotelAvilableRoomsByIdQuery, useGetHotelByIdQuery, useGetHotelGalleryByIdQuery, useGetHotelReviewsByIdQuery, useGetHotelRoomsByIdQuery } from "../../redux/hotel/hotelsApi";
+import { useGetHotelAvilableRoomsByIdQuery, useGetHotelByIdQuery, useGetHotelGalleryByIdQuery, useGetHotelReviewsByIdQuery, useGetHotelRoomsByIdQuery } from "../../redux/user/hotel/hotelsApi";
 import Loading from "../../components/common/loading/loading.component";
 import { Hotel as HotelModel } from "../../models/hotel";
 import style from './hotel.module.css';
@@ -17,7 +17,7 @@ import dayjs from "dayjs";
 import SearchRooms from "./components/search-rooms.component";
 import { ReservationData } from "../../models/search-reservation";
 import { useDispatch } from "react-redux";
-import { updateCheckDates } from "../../redux/hotel/hotels-slice";
+import { updateCheckDates } from "../../redux/user/hotel/hotels-slice";
 
 const Hotel = () => {
   let [searchParams,] = useSearchParams();

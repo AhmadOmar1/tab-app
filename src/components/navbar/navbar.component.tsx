@@ -4,12 +4,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Switch from '@mui/material/Switch';
 import TabIcon from '../../assets/icons/tab-icon.component';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toggleTheme } from '../../redux/theme-slice';
 import { Avatar, IconButton, Menu, MenuItem, Tooltip, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { logout } from '../../redux/user/auth-slice';
+import { logout } from '../../redux/user/auth/auth-slice';
 
 const settings = ['Profile', 'Logout'];
 

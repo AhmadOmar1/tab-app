@@ -1,16 +1,8 @@
 .searchIcon {
     cursor: pointer;
     display: flex;
-    background-color: rgba(255, 0, 0, 0.851);
     border-radius: 50%;
     padding: 5px;
-    color: white;
     width: 40px !important;
     height: 40px !important;
-}
-
-.textField{
-    width: 600px;
-    border-radius: 22px;
-    background-color: green;
 }

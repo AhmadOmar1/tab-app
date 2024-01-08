@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import HotelsGrid from "../../components/cards/hotel/hotels-grid.component";
 import { SearchField } from "../../components/search-field/search-field.component";
-import { useGetHotelBySearchMutation } from "../../redux/hotel/hotelsApi";
+import { useGetHotelBySearchMutation } from "../../redux/user/hotel/hotelsApi";
 import dayjs from "dayjs";
 import Loading from "../../components/common/loading/loading.component";
 import { Hotel } from "../../models/hotel";
