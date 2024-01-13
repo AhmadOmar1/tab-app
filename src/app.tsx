@@ -1,8 +1,7 @@
-
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import Login from "./pages/login/login.page"
 import { ThemeProvider } from "@mui/material/styles";
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { darkTheme, lightTheme } from "./theme/theme"
 import { Paper } from "@mui/material"
 import NavBar from "./components/navbar/navbar.component"
@@ -28,7 +27,15 @@ function App() {
               key={index}
               element={<PrivateRoute {...route} element={route.element} />}
               path={route.path}
-            />
+            >
+              {route.children?.map((child, childIndex) => (
+                <Route
+                  key={childIndex}
+                  path={child.path}
+                  element={<PrivateRoute {...child} />} 
+                />
+              ))}
+            </Route>
           ))}
         </Routes>
       </Paper>

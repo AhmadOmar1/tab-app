@@ -6,6 +6,7 @@ export interface BaseHotel {
   hotelName: string;
 }
 
+
 export interface Hotel extends BaseHotel {
   amenities: Amenity[];
   starRating: number;
@@ -16,7 +17,7 @@ export interface Hotel extends BaseHotel {
   roomPrice?: number;
   roomType?: string;
   imageUrl?: string;
-  description?: string;  
+  description?: string;
   discount: number;
   originalRoomPrice: number;
   finalPrice: number;
@@ -29,5 +30,14 @@ export interface HotelDeal extends BaseHotel {
 
 }
 
-
+export interface AddHotel {
+  id?: number;
+  cityId?: number;
+  name: string;
+  description: string;
+  hotelType: number | null;
+  starRating: number | null;
+  latitude: number | null;
+  longitude: number | null;
+}
 

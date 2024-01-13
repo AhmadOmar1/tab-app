@@ -2,7 +2,7 @@
 import RecentlyVisited from "../../../components/cards/hotel/recently-visted.component";
 import { useEffect } from "react";
 import CustomCarousel from "../../../components/common/carousel/custom-carousel.component";
-import { useGetRecentlyVistedHotelsQuery } from "../../../redux/hotel/hotelsApi";
+import { useGetRecentlyVistedHotelsQuery } from "../../../redux/user/hotel/hotelsApi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import dayjs from "dayjs";

@@ -1,7 +1,7 @@
 import HotelCard from "../../../components/cards/hotel/hotel-card.component";
 import CustomCarousel from "../../../components/common/carousel/custom-carousel.component";
 import { useEffect } from "react";
-import { useGetFeatureDealsQuery } from "../../../redux/hotel/hotelsApi";
+import { useGetFeatureDealsQuery } from "../../../redux/user/hotel/hotelsApi";
 import Loading from "../../../components/common/loading/loading.component";
 import { Hotel } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";

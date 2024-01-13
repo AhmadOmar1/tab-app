@@ -5,7 +5,7 @@ import PriceIcon from '../../assets/icons/price-icon.component';
 import StarIcon from '../../assets/icons/star-icon.component';
 import AmenitiesIcon from '../../assets/icons/amenities-icon.component';
 import HomeIcon from '../../assets/icons/home-icon.component';
-import { useGetAmentiesQuery } from '../../redux/hotel/hotelsApi';
+import { useGetAmentiesQuery } from '../../redux/user/hotel/hotelsApi';
 import MultiSelect from '../common/select-menu/multi-select.component';
 import SingleSelectCheckmarks from '../common/select-menu/select-menu.component';
 import { RatingCheckbox } from '../raiting/raiting-checkbox.componen';

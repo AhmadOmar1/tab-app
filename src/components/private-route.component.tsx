@@ -5,11 +5,10 @@ import { getValue } from '../utils/storage.util';
 
 const PrivateRoute: React.FC<Route> = ({ element, requireAuth, requireAdmin }) => {
     const token = getValue('token');
-
+    
     const [, tokenPayloadEncoded] = token?.split('.') ?? [];
 
     if (!tokenPayloadEncoded) {
-   
         return <Navigate to="/login" />;
     }
 

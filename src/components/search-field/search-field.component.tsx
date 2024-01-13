@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { updateFormValues } from "../../redux/hotel/hotels-slice";
+import { updateFormValues } from "../../redux/user/hotel/hotels-slice";
 
 
 type SearchFieldProps = {
