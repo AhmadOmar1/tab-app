@@ -4,16 +4,15 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import LockIcon from '../../assets/icons/lock-icon.component';
-import { InputAdornment, Paper, useTheme, Button } from '@mui/material';
+import { InputAdornment, Paper, useTheme, Button, Fade } from '@mui/material';
 import UserIcon from '../../assets/icons/user-icon.component';
 import { login as loginReducer } from '../../redux/user/auth/auth-slice';
 import { loginValidationSchema } from '../../schemas';
 import { useNavigate } from 'react-router-dom';
 import EyeIcon from '../../assets/icons/eye-icon.component';
 import { useEffect,  useState } from 'react';
-import { useLoginMutation } from '../../redux/user/auth/authApi';
-import Loading from '../../components/common/loading/loading.component';
 import { useDispatch } from 'react-redux';
+import { useLoginMutation } from '../../redux/user/auth/authApi';
 export default function Login() {
 
     useEffect(() => {
@@ -58,11 +57,7 @@ export default function Login() {
         setDisplayPassword(!displayPassword);
     }
 
-    if (isLoading) return (
-        <Loading />
-    )
-    
-    return (
+    return <Fade   in={true} timeout={1000}>
         <Paper elevation={0} sx={{ height: '100vh', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
             <Container component="main" maxWidth="sm" sx={{ width: '100vw' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -138,7 +133,10 @@ export default function Login() {
                                         fontSize: '1.1rem'
                                     }}
                                 >
-                                    SIGN IN
+                                   {
+                                        formikProps.isSubmitting  || isLoading
+                                         ? 'Loading...' : 'Sign In'
+                                   }
                                 </Button>
                             </form>
                         )}
@@ -146,6 +144,7 @@ export default function Login() {
                 </Box>
             </Container>
         </Paper>
-    );
+        </Fade>
+    ;
 
 }
