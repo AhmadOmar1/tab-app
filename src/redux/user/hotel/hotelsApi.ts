@@ -53,8 +53,6 @@ export const hotelsApi = createApi({
     getHotelReviewsById: builder.query<Review[] , {id:number}> ({
       query: ({id}) => `${HOTEL_URL}${id}/reviews`
     }),
-    
-    
   })
 });
 

@@ -1,12 +1,11 @@
 import { Box, Button, CardActions, CardContent, CardMedia, Rating } from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useHistory
 import WifiIcon from "../../../assets/icons/wifi-icon.component";
 import KitchenIcon from "../../../assets/icons/kitchen-icon.component";
 import ScreenIcon from "../../../assets/icons/screen-icon.component";
 import { Hotel } from "../../../models/hotel";
-import LocationText from "../../common/text-icon/location.component";
 import { StyledCard, StyledTypography } from "../city/card.styles";
+import LocationText from "../../common/text-icon/location.component";
 
 interface HotelCardProps extends Hotel {
   onCardClick: () => void; 
@@ -17,15 +16,15 @@ const HotelCard: React.FC<HotelCardProps> = ({
   roomPhotoUrl,
   countryName,
   finalPrice,
-  originalRoomPrice,
   starRating,
   discount,
   cityName ,
   onCardClick
 }) => {
  
+  const previousPRice = finalPrice*(1-discount);
   return (
-    <StyledCard>
+    <StyledCard key={hotelId}>
       <CardMedia
         height='230px'
         component="img"
@@ -57,8 +56,8 @@ const HotelCard: React.FC<HotelCardProps> = ({
               {finalPrice % 1 === 0 ? `$${finalPrice}.00` : `$${finalPrice}0`}
             </StyledTypography>
             {
-              discount && originalRoomPrice ? <StyledTypography gutterBottom ml={2} variant="body2" component="del">
-                {originalRoomPrice % 1 === 0 ? `$${originalRoomPrice}.00` : `$${originalRoomPrice}0`}
+              discount && previousPRice ? <StyledTypography gutterBottom ml={2} variant="body2" component="del">
+                {previousPRice % 1 === 0 ? `$${previousPRice}.00` : `$${previousPRice}0`}
               </StyledTypography> : ''
             }
           </Box>

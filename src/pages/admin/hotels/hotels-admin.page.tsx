@@ -7,12 +7,12 @@ import CustomPopup from '../../../components/popups/popup.component'
 import CustomTable, { TableColumn } from '../components/table/custom-table.component'
 import UpdateHotel from './components/update-hotel.component'
 import { AddHotel as AddHotelModel, Hotel } from '../../../models/hotel'
-import DeleteHotel from './components/delete-hotel.component'
-import { useGetHotelsQuery } from '../../../redux/admin/hotel/hotel-api'
+import { useDeleteHotelMutation, useGetHotelsQuery } from '../../../redux/admin/hotel/hotel-api'
 import AddHotel from './components/add-hotel.component'
 import { hotelTypes } from './components/add-hotel.component'
 import style from '../admin.module.css'
 import Loading from '../../../components/common/loading/loading.component'
+import DeleteItem from '../components/delete-item.component'
 
 const citiesColumns: TableColumn[] = [
 
@@ -55,11 +55,12 @@ const HotelsAdmin = () => {
     const [openEditHotel, setIsOpenEditHotel] = useState(false);
     const [openDeleteHotel, setIsOpenDeleteHotel] = useState(false);
     const [selectedHotel, setSelectedHotel] = useState<AddHotelModel | null>(null);
-
     const { data, isLoading } = useGetHotelsQuery();
-
     const [filterdHotels, setFilterdHotels] = useState<AddHotelModel[]>(data as AddHotelModel[]);
     const [searchValue, setSearchValue] = useState<string>('');
+    const deleteHotelMessage = `Are you sure you want to delete ${selectedHotel?.name}?`
+
+    const [deleteHotelMutation, { isLoading: isHotelDeleting }] = useDeleteHotelMutation();
 
     const handleToggleAddSidebar = () => {
         setIsOpenAddHotel(!openAddHotel);
@@ -87,7 +88,21 @@ const HotelsAdmin = () => {
     }, [searchValue, data]);
 
 
-    { if (isLoading) return <Loading /> }
+    if (isLoading) return <Loading />
+
+    const handleHotelDelete = async () => {
+        try {
+            await deleteHotelMutation({ hotelId: selectedHotel?.id as number });
+
+            setFilterdHotels((prevHotels) => prevHotels.filter((hotel) => hotel.id !== selectedHotel?.id));
+
+            setIsOpenDeleteHotel(false);
+            !isLoading && alert('Hotel deleted successfully');
+
+        } catch (error) {
+            console.error('Error deleting city:', error);
+        }
+    };
 
     return <Box>
         <RightSidebar
@@ -119,7 +134,12 @@ const HotelsAdmin = () => {
             </Paper>
             <CustomPopup
                 dialogState={openDeleteHotel}
-                content={<DeleteHotel setIsOpen={setIsOpenDeleteHotel} hotel={selectedHotel as AddHotelModel} />}
+                content={
+                    <DeleteItem
+                        onDelete={handleHotelDelete}
+                        deleteMessage={deleteHotelMessage}
+                        isLoading={isHotelDeleting}
+                    />}
                 handleClose={() => {
                     setIsOpenDeleteHotel(false);
                 }}
