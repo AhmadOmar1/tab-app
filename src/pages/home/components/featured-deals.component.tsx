@@ -3,7 +3,6 @@ import CustomCarousel from "../../../components/common/carousel/custom-carousel.
 import { useEffect } from "react";
 import { useGetFeatureDealsQuery } from "../../../redux/user/hotel/hotelsApi";
 import Loading from "../../../components/common/loading/loading.component";
-import { Hotel } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 const FeatureDeals = () => {
@@ -50,10 +49,6 @@ const FeatureDeals = () => {
       />
     )}
   />
-
-
-
-
 };
 
 export default FeatureDeals;

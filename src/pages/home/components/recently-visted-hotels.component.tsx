@@ -1,18 +1,17 @@
-
 import RecentlyVisited from "../../../components/cards/hotel/recently-visted.component";
 import { useEffect } from "react";
-import CustomCarousel from "../../../components/common/carousel/custom-carousel.component";
-import { useGetRecentlyVistedHotelsQuery } from "../../../redux/user/hotel/hotelsApi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import dayjs from "dayjs";
+import CustomCarousel from "../../../components/common/carousel/custom-carousel.component";
+import { useGetRecentlyVistedHotelsQuery } from "../../../redux/user/hotel/hotelsApi";
+
 
 const RecentlyVistedHotels = () => {
 
     const user = useSelector((state: RootState) => state.auth.user);
     console.log('user:', user);
-    
-    
+
     const { data, isLoading, isError } = useGetRecentlyVistedHotelsQuery({ id: user?.user_id ?? 0 });
     useEffect(() => {
         if (data) {
@@ -20,6 +19,9 @@ const RecentlyVistedHotels = () => {
         }
         if (isError) {
             console.error('Error fetching recently visted hotels:', isError);
+        }
+        if (isLoading) {
+            console.log('Loading recently visted hotels...');
         }
     }, [data])
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import Carousel, { ResponsiveType } from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
+import "react-multi-carousel/lib/styles.css";
 import style from './carousel.module.css';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { IconButton, useTheme } from '@mui/material';
+import { IconButton } from '@mui/material';
+
+
 
 const CustomNextArrow: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ onClick }) => (
     <div className={style.customArrowLeft} onClick={onClick}>
@@ -90,7 +92,6 @@ const CustomCarousel = <T,>({
             <Carousel
                 responsive={responsive}
                 keyBoardControl={true}
-                removeArrowOnDeviceType={["tabletM", "tabletL", "mobileL", "mobileM", "mobileS", "tabletS"]}
                 autoPlay={true}
                 swipeable={true}
                 draggable={true}

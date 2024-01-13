@@ -1,5 +1,5 @@
-import  { useEffect, useState } from 'react';
-import {  Grid } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Grid } from '@mui/material';
 import { TrendingDestination as CityProps, } from '../../../models/trending-destination';
 import CustomPopup from '../../../components/popups/popup.component';
 import CityCard from '../../../components/cards/city/city-card.component';
@@ -12,7 +12,6 @@ const TrendingDestination = () => {
 
     const [dialogState, setDialogState] = useState(false);
     const [selectedCity, setSelectedCity] = useState<CityProps | null>(null);
-    
 
     const { data, isError, isLoading } = useGetTrendingDestinationQuery();
 
@@ -40,9 +39,8 @@ const TrendingDestination = () => {
     return (
         <Grid
             container
-            spacing={2}
             gap={5}
-            justifyContent="center"
+            justifyContent={'center'}
         >
             {data?.map((city: CityProps) => {
                 return (
