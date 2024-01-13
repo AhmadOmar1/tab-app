@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardMedia } from '@mui/material';
 import { TrendingDestination } from '../../../models/trending-destination';
 import LocationText from '../../common/text-icon/location.component';
 
@@ -9,9 +9,17 @@ const CityCard: React.FC<TrendingDestination & { handleClick: (city: TrendingDes
     return (
         <Box width={300}>
             <Card
-                elevation={10}
-                sx={{ cursor: 'pointer' }}
-                onClick={handleClick}
+                onClick={() => handleClick({
+                    cityName,
+                    countryName,
+                    thumbnailUrl,
+                 })}
+                sx={{
+                    cursor: 'pointer',
+                    '&:hover': {
+                        boxShadow: 5,
+                    },
+                }}
             >
                 <CardMedia
                     component="img"

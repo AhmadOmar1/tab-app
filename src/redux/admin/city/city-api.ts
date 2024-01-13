@@ -13,7 +13,7 @@ export const cityApi = createApi({
         getCities: builder.query<City[], void>({
             query: () => CITY_URL,
         }),
-        addCity: builder.mutation<City, { name: string, description: string }>({
+        addCity: builder.mutation<City, { city:City }>({
             query: (newCity) => ({
                 url: CITY_URL,
                 method: 'POST',
