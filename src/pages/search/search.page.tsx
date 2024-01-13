@@ -7,7 +7,7 @@ import Loading from "../../components/common/loading/loading.component";
 import { Hotel } from "../../models/hotel";
 import { useEffect, useState } from "react";
 import { Drawer, IconButton, } from "@mui/material";
-import SideBar from "../../components/side-bar/sidebar.component";
+import SideBar from "./side-bar/sidebar.component";
 import { ChevronLeft, FilterAlt } from "@mui/icons-material";
 import { useSearchParams } from "react-router-dom";
 import { FilterData } from "../../models/filter";
@@ -15,7 +15,7 @@ import style from "./search.module.css"
 export default function Search() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchResults, setSearchResults] = useState<Hotel[]>();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const [filterData, setFilterData] = useState<FilterData>({
     price: [50, 1000],
@@ -31,7 +31,7 @@ export default function Search() {
   const rooms = Number(searchParams.get("rooms") ?? 1);
 
 
-  const [fetchSearchResults, { isLoading }] = useGetHotelBySearchMutation();
+  const [fetchSearchResultsMutation, { isLoading }] = useGetHotelBySearchMutation();
 
   const searchQuery =
     `checkInDate=${checkin.format('YYYY-MM-DD')}&checkOutDate=${checkout.format('YYYY-MM-DD')}&location=${location}
@@ -59,7 +59,7 @@ export default function Search() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetchSearchResults(searchQuery);
+        const response = await fetchSearchResultsMutation(searchQuery);
         if ('data' in response) {
           setSearchResults(response.data);
           console.log("response.data", response.data);
@@ -95,7 +95,7 @@ export default function Search() {
   const handleFilter = async (values: FilterData) => {
     setFilterData(values);
     try {
-      const response = await fetchSearchResults(searchQuery);
+      const response = await fetchSearchResultsMutation(searchQuery);
 
       if ('data' in response) {
         const filteredResults = applyFilters(response.data);
@@ -107,7 +107,6 @@ export default function Search() {
     }
 
   }
-
 
   return (
     <Box sx={{

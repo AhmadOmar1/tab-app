@@ -1,11 +1,12 @@
-// SearchField.styles.js
 import styled from "@emotion/styled";
-import { Box } from "@mui/material";
+import { Box, Button, Theme } from "@mui/material";
 
 interface StyledBoxProps {
-    expanded: boolean;
-  }
-export const StyledBox =  styled(Box)<StyledBoxProps>`
+  expanded: boolean;
+  theme?: Theme
+}
+
+export const StyledBox = styled(Box) <StyledBoxProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,4 +37,21 @@ export const StyledForm = styled.form<StyledBoxProps>`
   flex: 1;
  
 `;
+
+
+export const StyledButton = styled(Button)<StyledBoxProps>`
+  height: ${(props) => (props.expanded ? "50px" : "40px")};
+  border-radius: ${(props) => (props.expanded ? "7px" : "50%")};
+  min-width: auto;
+  width: ${(props) => (props.expanded ? "80%" : "40px")};
+  padding: ${(props) => (props.expanded ? "15px" : "0")};
+  margin-top: ${(props) => (props.expanded ? "20px" : "0")};
+  background-color: ${(props) =>  props.theme.palette.secondary.dark};
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    transform: ${(props) => (props.expanded ? "rotate(0deg)" : "rotate(180deg)")};
+  }
+`;
+
+
 

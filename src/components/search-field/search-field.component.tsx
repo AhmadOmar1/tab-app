@@ -1,9 +1,9 @@
 import { Search } from "@mui/icons-material";
-import { Box, TextField, Button, FormControl, useTheme } from "@mui/material";
+import { Box, TextField, FormControl, useTheme } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import {  useState } from "react";
+import { useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { StyledBox, StyledForm } from "./search-field.styles";
+import { StyledBox, StyledButton, StyledForm } from "./search-field.styles";
 import { QuantityInput } from "../common/quantity-Input/quantityInput.component";
 import style from "./search-field.module.css";
 import dayjs from "dayjs";
@@ -11,7 +11,6 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateFormValues } from "../../redux/user/hotel/hotels-slice";
-
 
 type SearchFieldProps = {
   location?: string;
@@ -34,7 +33,7 @@ export const SearchField: React.FC<SearchFieldProps> = ({
   const navigate = useNavigate();
   const onFocus = () => setExpanded(true);
   const onBlur = () => setExpanded(false);
-  
+
   const dispatch = useDispatch();
   const theme = useTheme();
   const formik = useFormik({
@@ -46,8 +45,8 @@ export const SearchField: React.FC<SearchFieldProps> = ({
       children,
       rooms,
     },
-    onSubmit:  (values) => {
-      try {        
+    onSubmit: (values) => {
+      try {
         dispatch(updateFormValues(values));
         const queryParams = {
           location: values.location,
@@ -58,8 +57,8 @@ export const SearchField: React.FC<SearchFieldProps> = ({
           rooms: values.rooms,
         }
         navigate('/search?' + new URLSearchParams(queryParams as any).toString());
-      }catch (err) {
-          console.log(err);
+      } catch (err) {
+        console.log(err);
       }
     }
   });
@@ -197,22 +196,15 @@ export const SearchField: React.FC<SearchFieldProps> = ({
             </>
           )}
 
-          <Button
+          <StyledButton
             type="submit"
             variant="contained"
-            sx={{
-              height: expanded ? "50px" : "40px",
-              borderRadius: !expanded ? "50%" : "7px",
-              minWidth: "auto",
-              width: expanded ? "80%" : "40px",
-              padding: expanded ? "15px" : "0",
-              mt: expanded ? "20px" : "0",
-              backgroundColor: theme.palette.secondary.dark,
-            }}
+            expanded={expanded}
+            theme={theme}
           >
             <Search />
             {expanded && "Search"}
-          </Button>
+          </StyledButton>
         </StyledForm>
       </StyledBox>
     </>
