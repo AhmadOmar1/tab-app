@@ -4,24 +4,18 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from '@mui/material';
-import { Room } from '../../../../models/room';
 
-interface DeleteRoomProps {
-    room: Room;
-    setIsOpen(value: boolean): void;
+interface DeleteItemProps {
+    onDelete: () => void;
+    isLoading: boolean;
+    deleteMessage: string;
 }
 
-const DeleteRoom: React.FC<DeleteRoomProps> = ({ room ,setIsOpen}) => {
-
-    const handleDeleteCity = () => {
-        console.log('delete room', room);
-        setIsOpen(false);
-    }
-
+const DeleteItem: React.FC<DeleteItemProps> = ({ deleteMessage,isLoading,onDelete }) => {
     return (
         <Box>
             <DialogTitle id="alert-dialog-title">
-                {`Are you sure you want to delete ${room.roomNumber}/${room.roomType} room?`}
+                {deleteMessage}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
@@ -29,12 +23,12 @@ const DeleteRoom: React.FC<DeleteRoomProps> = ({ room ,setIsOpen}) => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button variant='contained' onClick={handleDeleteCity} autoFocus>
-                    Agree
+                <Button variant='contained' onClick={onDelete} autoFocus>
+                    {isLoading ? 'Deleting...' : 'Delete'}
                 </Button>
             </DialogActions>
         </Box>
     );
 }
 
-export default DeleteRoom;
+export default DeleteItem;
