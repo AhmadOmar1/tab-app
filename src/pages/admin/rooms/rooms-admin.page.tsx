@@ -66,7 +66,7 @@ const CitiesAdmin = () => {
     const [filterdRooms, setFilterdRooms] = useState<Room[]>();
     const [searchValue, setSearchValue] = useState<string>('');
     const [rooms, setRooms] = useState<Room[]>([]);
-    const deleteRoomMessage = `Are you sure you want to delete ${selectedRoom?.roomNumber}/${selectedRoom?.roomType} `
+    const deleteRoomMessage = `Are you sure you want to delete ${selectedRoom?.roomNumber}/${selectedRoom?.roomType} room? `
 
     const [getRoomsMutation, { isLoading }] = useGetHotelRoomsMutation();
 

@@ -58,7 +58,7 @@ const HotelsAdmin = () => {
     const { data, isLoading } = useGetHotelsQuery();
     const [filterdHotels, setFilterdHotels] = useState<AddHotelModel[]>(data as AddHotelModel[]);
     const [searchValue, setSearchValue] = useState<string>('');
-    const deleteHotelMessage = `Are you sure you want to delete ${selectedHotel?.name}?`
+    const deleteHotelMessage = `Are you sure you want to delete (${selectedHotel?.name}) hotel?`
 
     const [deleteHotelMutation, { isLoading: isHotelDeleting }] = useDeleteHotelMutation();
 

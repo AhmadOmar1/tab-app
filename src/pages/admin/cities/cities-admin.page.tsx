@@ -1,7 +1,6 @@
 import { Box, Button, IconButton, Paper, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { DeleteOutline, EditNoteSharp } from '@mui/icons-material'
-import DeleteCity from './components/delete-city.component'
 import RightSidebar from '../components/sidebar/right-sidebar.component'
 import UpdateCity from './components/update-city.component'
 import AddCity from './components/add-city.component'
@@ -9,9 +8,10 @@ import SearchBar from '../../../components/common/search-bar/search-bar.componen
 import CustomPopup from '../../../components/popups/popup.component'
 import { City } from '../../../models/trending-destination'
 import CustomTable, { TableColumn } from '../components/table/custom-table.component'
-import { useGetCitiesQuery } from '../../../redux/admin/city/city-api'
+import { useDeleteCityMutation, useGetCitiesQuery } from '../../../redux/admin/city/city-api'
 import style from '../admin.module.css'
 import Loading from '../../../components/common/loading/loading.component'
+import DeleteItem from '../components/delete-item.component'
 
 
 const citiesColumns: TableColumn[] = [
@@ -41,6 +41,8 @@ const CitiesAdmin = () => {
   const { data, isLoading } = useGetCitiesQuery()
   const [filterdCities, setFilterdCities] = useState<City[]>(data as City[]);
   const [searchValue, setSearchValue] = useState<string>('');
+  const deleteCityMessage = `Are you sure you want to delete ${selectedCity?.name} city?`
+  const [deleteCityMutation, { isLoading: isCityDeleting }] = useDeleteCityMutation();
 
   const handleToggleAddSidebar = () => {
     setIsOpenAddCity(!openAddCity);
@@ -50,12 +52,25 @@ const CitiesAdmin = () => {
     setIsOpenEditCity(!openEditCity);
   }
 
+  const handleCityDelete = async () => {
+    try {
+
+      await deleteCityMutation({ cityId: selectedCity?.id as number });
+
+      setFilterdCities((prevCities) => prevCities.filter((city) => city.id !== selectedCity?.id));
+      setIsOpenDeleteCity(false);
+      !isLoading && alert('City deleted successfully');
+
+    } catch (error) {
+      console.error('Error deleting city:', error);
+    }
+  };
 
   useEffect(() => {
     const newFilteredCities = data?.filter((city) => {
       return (
         city.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        city.description.toLowerCase().includes(searchValue.toLowerCase())
+        city.description?.toLowerCase().includes(searchValue.toLowerCase())
       );
     });
 
@@ -94,7 +109,12 @@ const CitiesAdmin = () => {
       </Paper>
       <CustomPopup
         dialogState={openDeleteCity}
-        content={<DeleteCity setIsOpen={setIsOpenDeleteCity} city={selectedCity as City} />}
+        content={
+          <DeleteItem
+            deleteMessage={deleteCityMessage}
+            isLoading={isCityDeleting}
+            onDelete={handleCityDelete}
+          />}
         handleClose={() => {
           setIsOpenDeleteCity(false);
         }}
@@ -118,7 +138,7 @@ const CitiesAdmin = () => {
                   <IconButton
                     onClick={() => {
                       setSelectedCity(city);
-                      setIsOpenAddCity(true);
+                      setIsOpenDeleteCity(true);
                     }}
                   >
                     <DeleteOutline />

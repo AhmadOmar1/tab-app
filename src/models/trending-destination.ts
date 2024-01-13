@@ -1,8 +1,14 @@
-export interface City {
+export interface BaseCity {
     id?:number,
+    description?:string,
+}
+export interface City extends BaseCity {
     name:string, 
-    description:string,
 }
-export interface TrendingDestination extends City {
+export interface TrendingDestination extends BaseCity {
     thumbnailUrl: string;
+    cityName: string;
+    countryName: string;
 }
+
+

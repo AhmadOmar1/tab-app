@@ -27,7 +27,7 @@ const AddCity: React.FC = () => {
                     name: values.name,
                     description: values.description,
                 };
-                await addCityMutation(city).unwrap();
+                await addCityMutation({city:city}).unwrap();
 
                 setIsSuccess(true);
                 setIsError(false);
