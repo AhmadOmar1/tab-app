@@ -9,10 +9,10 @@ import { Room } from '../../../models/room'
 import { useGetHotelsQuery } from '../../../redux/admin/hotel/hotel-api'
 import UpdateRoom from './components/update-room.component'
 import AddRoom from './components/addroom/add-room.component'
-import DeleteRoom from './components/delete-room.component'
 import { useGetHotelRoomsMutation } from '../../../redux/admin/room/room-api'
 import style from '../admin.module.css'
 import Loading from '../../../components/common/loading/loading.component'
+import DeleteItem from '../components/delete-item.component'
 
 const roomsColumns: TableColumn[] = [
 
@@ -66,6 +66,7 @@ const CitiesAdmin = () => {
     const [filterdRooms, setFilterdRooms] = useState<Room[]>();
     const [searchValue, setSearchValue] = useState<string>('');
     const [rooms, setRooms] = useState<Room[]>([]);
+    const deleteRoomMessage = `Are you sure you want to delete ${selectedRoom?.roomNumber}/${selectedRoom?.roomType} `
 
     const [getRoomsMutation, { isLoading }] = useGetHotelRoomsMutation();
 
@@ -90,10 +91,15 @@ const CitiesAdmin = () => {
         })
     }, [])
 
-    console.log(rooms);
 
+    const handleDeleteRoom = () => {
 
-
+        try {
+            setFilterdRooms((prevRooms) => prevRooms?.filter((room) => room.id !== selectedRoom?.id));
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         const newFilteredRooms = rooms?.filter((room) => {
@@ -106,15 +112,15 @@ const CitiesAdmin = () => {
                 (room.roomAmenities?.some((amenity) => amenity.name.toLowerCase().includes(searchValue.toLowerCase())) ?? false)
             );
         });
-    
+
         setFilterdRooms(newFilteredRooms as Room[]);
     }, [searchValue, rooms]);
 
-    {
-        if (isLoading) {
-            return <Loading />;
-        }
+
+    if (isLoading) {
+        return <Loading />;
     }
+
     return <Box>
         <RightSidebar
             onClick={handleToggleEditSidebar}
@@ -145,7 +151,14 @@ const CitiesAdmin = () => {
             </Paper>
             <CustomPopup
                 dialogState={openDeleteRoom}
-                content={<DeleteRoom setIsOpen={setIsOpenDeleteRoom} room={selectedRoom as Room} />}
+                content={
+
+                    <DeleteItem
+                        deleteMessage={deleteRoomMessage}
+                        onDelete={handleDeleteRoom}
+                        isLoading={false}
+                    />
+                }
                 handleClose={() => {
                     setIsOpenDeleteRoom(false);
                 }}
@@ -189,7 +202,6 @@ const CitiesAdmin = () => {
                     }) as any
                 }
             />
-
         </Box>
     </Box >
 }

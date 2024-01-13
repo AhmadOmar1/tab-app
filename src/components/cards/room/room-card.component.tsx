@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardMedia, Stack, Typography, makeStyles } from "@mui/material"
+import { Box, Card, CardContent, CardMedia, Stack, Typography } from "@mui/material"
 import TextIcon from "../../common/text-icon/text-icon.component"
 import ChildrenIcon from "../../../assets/icons/children-icon.component"
 import { Room } from "../../../models/room";
