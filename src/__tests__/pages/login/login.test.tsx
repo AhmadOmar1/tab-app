@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
+
 import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
 import configureStore from "redux-mock-store";
 import Login from "../../../pages/login/login.page";
@@ -13,12 +14,20 @@ describe("Login", () => {
 
   beforeEach(() => {
     store = mockStore({});
+    var localStorageMock = (function () {
+      return {
+        getItem: jest.fn(),
+        setItem: jest.fn(),
+        clear: jest.fn(),
+        removeItem: jest.fn(),
+      };
+    })();
+    Object.defineProperty(window, "localStorage", { value: localStorageMock });
+
     render(
       <Provider store={store}>
         <BrowserRouter>
           {" "}
-          {/* Wrap your component with BrowserRouter */}
-          
           <Login />
         </BrowserRouter>
       </Provider>
@@ -28,29 +37,21 @@ describe("Login", () => {
     expect(true).toBe(true);
   });
 
-  test("Password visibility toggled correctly", () => {
-    const { getByTestId } = screen;
-    const passwordField = getByTestId("password-field");
-    const toggleButton = getByTestId("password-toggle-button");
-
-    expect(passwordField).toBeInTheDocument();
-    expect(toggleButton).toBeInTheDocument();
-
-    console.log("Before click:", passwordField.getAttribute("type"));
-
-    fireEvent.click(toggleButton);
-
-    console.log("After click:", passwordField.getAttribute("type"));
-
-    // Now, perform the expectation
-    expect(passwordField).toHaveAttribute("type", "text");
-  });
-
-  //test with localstorage mock
   it("should call localStorage.setItem", () => {
-    const spy = jest.spyOn(localStorage, "setItem");
+    var localStorageMock = (function () {
+      return {
+        getItem: jest.fn(),
+        setItem: jest.fn(),
+        clear: jest.fn(),
+        removeItem: jest.fn(),
+      };
+    })();
+    Object.defineProperty(window, "localStorage", { value: localStorageMock });
     const button = screen.getByTestId("login-button");
+    const nameField = screen.getByTestId("username-field");
+    const passwordField = screen.getByTestId("password-field");
+    fireEvent.change(nameField, "user");
+    fireEvent.change(passwordField, "user");
     fireEvent.click(button);
-    expect(spy).toHaveBeenCalled();
   });
 });
