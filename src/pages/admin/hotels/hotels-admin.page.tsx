@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Paper, Typography } from '@mui/material'
+import { Box, Button, Fade, IconButton, Paper, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { DeleteOutline, EditNoteSharp } from '@mui/icons-material'
 import RightSidebar from '../components/sidebar/right-sidebar.component'
@@ -104,7 +104,8 @@ const HotelsAdmin = () => {
         }
     };
 
-    return <Box>
+    return <Fade in={true} timeout={1000}>  
+    <Box>
         <RightSidebar
             onClick={handleToggleEditSidebar}
             open={openEditHotel}
@@ -175,6 +176,7 @@ const HotelsAdmin = () => {
             />
         </Box>
     </Box >
+    </Fade>
 }
 
 

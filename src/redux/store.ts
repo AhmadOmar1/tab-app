@@ -24,13 +24,16 @@ export const store = configureStore({
 
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(authMiddleware,
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }).concat(authMiddleware,
             hotelsApi.middleware,
             authApi.middleware,
             bookingApi.middleware,
             cityApi.middleware,
             hotelAdminApi.middleware,
             roomApi.middleware,
+            
         )
 
 })

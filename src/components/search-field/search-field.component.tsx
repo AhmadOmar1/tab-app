@@ -19,17 +19,17 @@ type SearchFieldProps = {
   adults?: number;
   children?: number;
   rooms?: number;
-}
+};
 
 export const SearchField: React.FC<SearchFieldProps> = ({
-  location = '',
+  location = "",
   checkin = dayjs(),
-  checkout = dayjs().add(1, 'day'),
+  checkout = dayjs().add(1, "day"),
   adults = 2,
   children = 0,
   rooms = 1,
 }) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState<boolean>(false);
   const navigate = useNavigate();
   const onFocus = () => setExpanded(true);
   const onBlur = () => setExpanded(false);
@@ -50,17 +50,19 @@ export const SearchField: React.FC<SearchFieldProps> = ({
         dispatch(updateFormValues(values));
         const queryParams = {
           location: values.location,
-          checkin: dayjs(values.checkin).format('YYYY-MM-DD'),
-          checkout: dayjs(values.checkout).format('YYYY-MM-DD'),
+          checkin: dayjs(values.checkin).format("YYYY-MM-DD"),
+          checkout: dayjs(values.checkout).format("YYYY-MM-DD"),
           adults: values.adults,
           children: values.children,
           rooms: values.rooms,
-        }
-        navigate('/search?' + new URLSearchParams(queryParams as any).toString());
+        };
+        navigate(
+          "/search?" + new URLSearchParams(queryParams as any).toString()
+        );
       } catch (err) {
         console.log(err);
       }
-    }
+    },
   });
 
   return (
@@ -113,7 +115,9 @@ export const SearchField: React.FC<SearchFieldProps> = ({
                       sx={{
                         "& fieldset": { border: "solid 1px" },
                       }}
-                      onChange={(date) => formik.setFieldValue("checkin", dayjs(date))}
+                      onChange={(date) =>
+                        formik.setFieldValue("checkin", dayjs(date))
+                      }
                     />
                   </LocalizationProvider>
                 </FormControl>
@@ -127,11 +131,13 @@ export const SearchField: React.FC<SearchFieldProps> = ({
                       label="Check Out"
                       name="checkout"
                       value={formik.values.checkout}
-                      minDate={dayjs(formik.values.checkin).add(1, 'day')}
+                      minDate={dayjs(formik.values.checkin).add(1, "day")}
                       sx={{
                         "& fieldset": { border: "solid 1px" },
                       }}
-                      onChange={(date) => formik.setFieldValue("checkout", dayjs(date))}
+                      onChange={(date) =>
+                        formik.setFieldValue("checkout", dayjs(date))
+                      }
                     />
                   </LocalizationProvider>
                 </FormControl>
@@ -169,9 +175,9 @@ export const SearchField: React.FC<SearchFieldProps> = ({
             <>
               <TextField
                 placeholder="When"
-                value={`${dayjs(formik.values.checkin).format("MMM DD")} - ${dayjs(
-                  formik.values.checkout
-                ).format("MMM DD")}`}
+                value={`${dayjs(formik.values.checkin).format(
+                  "MMM DD"
+                )} - ${dayjs(formik.values.checkout).format("MMM DD")}`}
                 onFocus={onFocus}
                 variant="outlined"
                 name="when"
@@ -184,7 +190,11 @@ export const SearchField: React.FC<SearchFieldProps> = ({
               <TextField
                 placeholder="Guests"
                 variant="outlined"
-                value={`${formik.values.adults + formik.values.children + formik.values.rooms} Guests`}
+                value={`${
+                  formik.values.adults +
+                  formik.values.children +
+                  formik.values.rooms
+                } Guests`}
                 type="text"
                 onFocus={onFocus}
                 sx={{

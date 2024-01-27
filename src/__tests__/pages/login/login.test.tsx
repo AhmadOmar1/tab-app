@@ -1,41 +1,56 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import configureStore, { MockStoreEnhanced } from 'redux-mock-store';
-import { BrowserRouter as Router } from 'react-router-dom'; 
-import '@testing-library/jest-dom';
-import Login from '../../../pages/login/login.page';
-interface RootState {
-}
+import "@testing-library/jest-dom";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
+import configureStore from "redux-mock-store";
+import Login from "../../../pages/login/login.page";
+import "jest-localstorage-mock";
 
-const mockStore = configureStore<RootState>();
+const mockStore = configureStore([]);
 
-describe('Login component', () => {
-  it('renders login form and handles form submission', async () => {
-    const store: MockStoreEnhanced<RootState> = mockStore({});
+describe("Login", () => {
+  let store;
+
+  beforeEach(() => {
+    store = mockStore({});
     render(
       <Provider store={store}>
-        <Router>
+        <BrowserRouter>
+          {" "}
+          {/* Wrap your component with BrowserRouter */}
+          
           <Login />
-        </Router>
+        </BrowserRouter>
       </Provider>
     );
-
-    expect(screen.getByPlaceholderText('Username')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
-
-    const mockLogin = jest.fn();
-    jest.mock('../../../redux/user/authApi', () => ({ login: mockLogin }));
-
-    act(() => {
-      fireEvent.change(screen.getByPlaceholderText('Username'), { target: { value: 'testuser' } });
-      fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'testpassword' } });
-
-      fireEvent.click(screen.getByRole('button'));
-    });
+  });
+  it("renders without errors", () => {
+    expect(true).toBe(true);
   });
 
+  test("Password visibility toggled correctly", () => {
+    const { getByTestId } = screen;
+    const passwordField = getByTestId("password-field");
+    const toggleButton = getByTestId("password-toggle-button");
 
+    expect(passwordField).toBeInTheDocument();
+    expect(toggleButton).toBeInTheDocument();
+
+    console.log("Before click:", passwordField.getAttribute("type"));
+
+    fireEvent.click(toggleButton);
+
+    console.log("After click:", passwordField.getAttribute("type"));
+
+    // Now, perform the expectation
+    expect(passwordField).toHaveAttribute("type", "text");
+  });
+
+  //test with localstorage mock
+  it("should call localStorage.setItem", () => {
+    const spy = jest.spyOn(localStorage, "setItem");
+    const button = screen.getByTestId("login-button");
+    fireEvent.click(button);
+    expect(spy).toHaveBeenCalled();
+  });
 });
-
-
-

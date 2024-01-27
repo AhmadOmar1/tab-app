@@ -93,6 +93,7 @@ export default function Login() {
                                             </InputAdornment>
                                         )
                                     }}
+                                    data-testid="username-field"
                                 />
                                 <ErrorMessage name="username" component="div" >
                                     {msg => <div style={{ color: theme.palette.error.dark }}>{msg}</div>}
@@ -112,11 +113,12 @@ export default function Login() {
                                             </InputAdornment>
                                         ),
                                         endAdornment: (
-                                            <InputAdornment position="end" onClick={handlePasswordDispaly} sx={{ cursor: 'pointer' }} >
-                                                <EyeIcon />
+                                            <InputAdornment position="end" onClick={handlePasswordDispaly}  sx={{ cursor: 'pointer' }} data-testid="password-toggle-button">
+                                                <EyeIcon  />
                                             </InputAdornment>
                                         ),
                                     }}
+                                    data-testid="password-field"
                                 />
 
                                 <ErrorMessage name="password" component="div" >
@@ -132,6 +134,7 @@ export default function Login() {
                                         height: '40px',
                                         fontSize: '1.1rem'
                                     }}
+                                    data-testid="login-button"
                                 >
                                    {
                                         formikProps.isSubmitting  || isLoading

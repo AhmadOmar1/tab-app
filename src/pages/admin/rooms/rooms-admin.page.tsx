@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Paper, Typography } from '@mui/material'
+import { Box, Button, Fade, IconButton, Paper, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { DeleteOutline, EditNoteSharp } from '@mui/icons-material'
 import RightSidebar from '../components/sidebar/right-sidebar.component'
@@ -54,8 +54,6 @@ const roomsColumns: TableColumn[] = [
     },
 
 ]
-
-
 
 const CitiesAdmin = () => {
     const [openAddRoom, setIsOpenAddRoom] = useState(false);
@@ -121,7 +119,8 @@ const CitiesAdmin = () => {
         return <Loading />;
     }
 
-    return <Box>
+    return <Fade in={true} timeout={1000}>  
+    <Box>
         <RightSidebar
             onClick={handleToggleEditSidebar}
             open={openEditRoom}
@@ -204,8 +203,7 @@ const CitiesAdmin = () => {
             />
         </Box>
     </Box >
+    </Fade>
 }
-
-
 
 export default CitiesAdmin
