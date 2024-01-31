@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import Loading from "../../components/common/loading/loading.component";
 import { Hotel } from "../../models/hotel";
 import { useEffect, useState } from "react";
-import { Drawer, IconButton, Typography } from "@mui/material";
+import { Drawer, Fade, IconButton, Typography } from "@mui/material";
 import SideBar from "./side-bar/sidebar.component";
 import { ChevronLeft, FilterAlt } from "@mui/icons-material";
 import { useSearchParams } from "react-router-dom";
@@ -39,7 +39,7 @@ export default function Search() {
     &adults=${adults}&children=${children}&rooms=${rooms}&starRating=${
     filterData.starRating
   }`;
-  
+
   const applyFilters = (dataToFilter: Hotel[]) => {
     return dataToFilter.filter((hotel) => {
       const starRatingMatches =
@@ -82,12 +82,11 @@ export default function Search() {
     };
     fetchData();
   }, [searchQuery]);
-  
+
   useEffect(() => {
     const filteredResults = applyFilters(fetchedData);
     setSearchResults(filteredResults);
   }, [filterData]);
-  
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -113,7 +112,7 @@ export default function Search() {
     setFilterData(values);
     try {
       const response = await fetchSearchResultsMutation(searchQuery);
-  
+
       if ("data" in response) {
         const filteredResults = applyFilters(response.data);
         setSearchResults(filteredResults);
@@ -124,80 +123,81 @@ export default function Search() {
       handleDrawerToggle();
     }
   };
-  
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <IconButton
-        color="inherit"
-        edge="start"
-        aria-label="open drawer"
-        onClick={handleDrawerToggle}
-        sx={iconStyle}
-      >
-        {mobileOpen ? <ChevronLeft /> : <FilterAlt />}
-      </IconButton>
+    <Fade in={true} timeout={1000}>
       <Box
-        component="aside"
         sx={{
-          width: { md: drawerWidth },
-          flexShrink: { md: 0 },
-          display: mobileOpen ? "block" : "none",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
-        aria-label="mailbox folders"
       >
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
+        <IconButton
+          color="inherit"
+          edge="start"
+          aria-label="open drawer"
+          onClick={handleDrawerToggle}
+          sx={iconStyle}
+        >
+          {mobileOpen ? <ChevronLeft /> : <FilterAlt />}
+        </IconButton>
+        <Box
+          component="aside"
           sx={{
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
+            width: { md: drawerWidth },
+            flexShrink: { md: 0 },
+            display: mobileOpen ? "block" : "none",
+          }}
+          aria-label="mailbox folders"
+        >
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true,
+            }}
+            sx={{
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
+          >
+            <SideBar onFilter={handleFilter} />
+          </Drawer>
+        </Box>
+        <Box
+          sx={{
+            pt: 4,
+            px: 3,
           }}
         >
-          <SideBar onFilter={handleFilter} />
-        </Drawer>
-      </Box>
-      <Box
-        sx={{
-          pt: 4,
-          px: 3,
-        }}
-      >
-        <Box className={style.hotelsContainer}>
-          <SearchField
-            adults={adults}
-            children={children}
-            rooms={rooms}
-            location={location}
-            checkin={checkin}
-            checkout={checkout}
-          />
-          {!isLoading && searchResults?.length === 0 && (
-            <Box >
-              <Typography variant="h5" textAlign={'center'}>
-                No results found for your filter criteria.
-              </Typography>
-              <Typography variant="body1" textAlign={'center'}>
-                Please try different filters or clear all filters to see more
-              </Typography>
-            </Box>
+          <Box className={style.hotelsContainer}>
+            <SearchField
+              adults={adults}
+              children={children}
+              rooms={rooms}
+              location={location}
+              checkin={checkin}
+              checkout={checkout}
+            />
+            {!isLoading && searchResults?.length === 0 && (
+              <Box>
+                <Typography variant="h5" textAlign={"center"}>
+                  No results found for your filter criteria.
+                </Typography>
+                <Typography variant="body1" textAlign={"center"}>
+                  Please try different filters or clear all filters to see more
+                </Typography>
+              </Box>
             )}
-          <HotelsGrid data={searchResults ?? []} />
+            <HotelsGrid data={searchResults ?? []} />
+          </Box>
         </Box>
+        {isLoading && <Loading />}
       </Box>
-      {isLoading && <Loading />}
-    </Box>
+    </Fade>
   );
 }

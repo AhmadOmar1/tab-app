@@ -87,6 +87,7 @@ export default function Login() {
                                     autoFocus
                                     autoComplete="username"
                                     InputProps={{
+                                        
                                         startAdornment: (
                                             <InputAdornment position="start">
                                                 <UserIcon color="#999" />
@@ -105,8 +106,14 @@ export default function Login() {
                                     placeholder="Password"
                                     name="password"
                                     fullWidth
+                                    data-testid= "password-field"
+                                    
                                     autoComplete="current-password"
+                                    inputProps={{
+                                        dataTestid : "password-field"
+                                    }}
                                     InputProps={{
+
                                         startAdornment: (
                                             <InputAdornment position="start">
                                                 <LockIcon color="#999" />
@@ -118,7 +125,6 @@ export default function Login() {
                                             </InputAdornment>
                                         ),
                                     }}
-                                    data-testid="password-field"
                                 />
 
                                 <ErrorMessage name="password" component="div" >
