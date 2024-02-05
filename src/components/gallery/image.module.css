@@ -1,0 +1,21 @@
+.customOriginal {
+  width: 100% !important;
+
+}
+
+.customOriginal2{
+    max-height: 500px;
+
+}
+
+.customOriginal img {
+
+  background-color: blue;
+  /* width: 200px !important;
+  height: 200px !important; */
+  object-fit: cover !important;
+}
+
+.customThumbnail {
+  min-height: 2000px !important;
+}

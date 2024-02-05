@@ -1,0 +1,6 @@
+
+input::placeholder {
+    color: black !important;
+    opacity: 0.9 !important;
+    text-transform: uppercase;
+}

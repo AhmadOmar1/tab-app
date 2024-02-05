@@ -1,0 +1,58 @@
+
+.homeContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 6rem;
+    padding-inline: 1rem;
+    min-height: 100vh;
+    width: 100%;
+}
+.ImageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+.homeImage{
+    border-radius:25px;
+    width: 90%;
+    height: 600px;
+  
+}
+
+.homeSecondTitle {
+    font-size: 1.5rem !important;
+    font-weight: 500 !important;
+    max-width:1000px
+}
+
+@media screen and (max-width: 767px) {
+  
+    .homeTitle {
+        font-size:2rem !important;
+    }
+    .homeSecondTitle {
+        width:100%;
+        font-size:1.1rem !important;
+    }
+    .homeImage{
+        display: none !important;
+    }
+
+    .homeHeader {
+        font-size: 1.5rem !important;
+    }
+    .secondHomeHeader {
+        font-size: 1.1rem !important;
+    }
+  
+}
+
+@media screen and (max-width: 480px) {
+    .homeTitle {
+        font-size: 2rem !important;
+        font-weight: 700 !important;
+    }
+}

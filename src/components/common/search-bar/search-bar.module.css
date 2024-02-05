@@ -1,0 +1,8 @@
+.searchIcon {
+    cursor: pointer;
+    display: flex;
+    border-radius: 50%;
+    padding: 5px;
+    width: 40px !important;
+    height: 40px !important;
+}

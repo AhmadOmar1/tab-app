@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { getValue } from "./storage.util";
-import { TOKEN_KEY } from "./alerts/token.util";
+import { TOKEN_KEY } from "./token.util";
 
 const BASE_URL = "";
 type HTTPMethod = 'get' | 'post' | 'put' | 'delete';

@@ -1,68 +1,46 @@
-import Admin from "./pages/admin/admin.page"
-import Checkout from "./pages/checkout/checkout.page"
-import Confirmation from "./pages/confirmation/confirmation.page"
-import Home from "./pages/home/home.page"
-import Hotel from "./pages/hotel/hotel.page"
-import Search from "./pages/search/search.page"
 import { Route, Routes } from "react-router-dom"
-import ProtectedRoute from "./components/protected-route.component"
 import Login from "./pages/login/login.page"
-import NotFound from "./pages/not-found/not-found.page"
-
-const routes = [{
-  path: '/login',
-  element: <Login />,
-  requireAuth: false,
-  requireAdmin: false
-},
-{
-  path: '/admin',
-  element: <Admin />,
-  requireAuth: true,
-  requireAdmin: true
-
-}, {
-  path: '/checkout',
-  element: <Checkout />,
-  requireAuth: true,
-  requireAdmin: false
-}, {
-  path: '/confirmation',
-  element: <Confirmation />,
-  requireAuth: true,
-  requireAdmin: false
-}, {
-  path: '/home',
-  element: <Home />,
-  requireAuth: true,
-  requireAdmin: false
-}, {
-  path: '/hotel',
-  element: <Hotel />,
-  requireAuth: true,
-  requireAdmin: false
-
-}, {
-  path: '/search',
-  element: <Search />,
-  requireAuth: true,
-  requireAdmin: false
-}]
+import { ThemeProvider } from "@mui/material/styles";
+import { useSelector } from "react-redux"
+import { darkTheme, lightTheme } from "./theme/theme"
+import { Paper } from "@mui/material"
+import NavBar from "./components/navbar/navbar.component"
+import { RootState } from '../src/redux/store';
+import routes from "./routes"
+import PrivateRoute from "./components/private-route.component";
 
 function App() {
+  const theme = useSelector((state: RootState) => state.theme);
   return (
-    <>
-      <Routes>
-        {
-          routes.map((route, index) => (
-            <Route key={index} element={route.requireAuth ? (<ProtectedRoute onlyAdmins={route.requireAdmin} component={route.element} />) : route.element} path={route.path} />
-          ))
-        }
-        <Route path="*" element={<NotFound />}></Route>
-
-      </Routes>
-    </>
-  )
+    <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
+      <Paper
+        style={{
+          minHeight: "100vh",
+          borderRadius: "0",
+        }}
+      >
+        {<NavBar />}
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          {routes.map((route, index) => (
+            <Route
+              key={index}
+              element={<PrivateRoute {...route} element={route.element} />}
+              path={route.path}
+            >
+              {route.children?.map((child, childIndex) => (
+                <Route
+                  key={childIndex}
+                  path={child.path}
+                  element={<PrivateRoute {...child} />} 
+                />
+              ))}
+            </Route>
+          ))}
+        </Routes>
+      </Paper>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
