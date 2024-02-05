@@ -1,6 +1,5 @@
 import Admin from './pages/admin/admin.page';
 import Checkout from './pages/checkout/checkout.page';
-import Confirmation from './pages/confirmation/confirmation.page';
 import Home from './pages/home/home.page';
 import Hotel from './pages/hotel/hotel.page';
 import Search from './pages/search/search.page';
@@ -11,7 +10,6 @@ import Forbidden from './pages/forbidden/forbidden.page';
 import CitiesAdmin from './pages/admin/cities/cities-admin.page';
 import HotelsAdmin from './pages/admin/hotels/hotels-admin.page';
 import RoomsAdmin from './pages/admin/rooms/rooms-admin.page';
-
 
 const routes: Route[] = [
   {
@@ -49,12 +47,6 @@ const routes: Route[] = [
   {
     path: '/checkout',
     element: <Checkout />,
-    requireAuth: true,
-    requireAdmin: false,
-  },
-  {
-    path: '/confirmation',
-    element: <Confirmation />,
     requireAuth: true,
     requireAdmin: false,
   },

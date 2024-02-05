@@ -18,22 +18,22 @@ import {
 } from "../../redux/user/hotel/hotelsApi";
 import Loading from "../../components/common/loading/loading.component";
 import { Hotel as HotelModel } from "../../models/hotel";
+import { Review } from "../../models/review";
+import { useEffect, useState } from "react";
+import { ReservationData } from "../../models/search-reservation";
+import { useDispatch } from "react-redux";
+import { updateCheckDates } from "../../redux/user/hotel/hotels-slice";
+import SomethingWentWrong from "../../components/common/error/something-went-wrong.component";
+import AddReview from "../../components/cards/reviews/add-review.component";
+import ReviewList from "../../components/cards/reviews/reviews-list.component";
+import dayjs from "dayjs";
 import style from "./hotel.module.css";
 import AmenityList from "../../components/amenity/amenity-list.component";
 import MapLocation from "../../components/map/map-container.component";
 import MyGallery from "../../components/gallery/image-slider.component";
 import LocationText from "../../components/common/text-icon/location.component";
 import RoomList from "../../components/cards/room/room-list.component";
-import { Review } from "../../models/review";
-import ReviewList from "../../components/cards/reviews/reviews-list.component";
-import { useState } from "react";
-import AddReview from "../../components/cards/reviews/add-review.component";
-import dayjs from "dayjs";
 import SearchRooms from "./components/search-rooms.component";
-import { ReservationData } from "../../models/search-reservation";
-import { useDispatch } from "react-redux";
-import { updateCheckDates } from "../../redux/user/hotel/hotels-slice";
-
 const Hotel = () => {
   let [searchParams] = useSearchParams();
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const Hotel = () => {
   const hotelId = Number(searchParams.get("hotelId"));
   const [acitve, setActive] = useState("Reviews");
   const [activeRooms, setActiveRooms] = useState("allRooms");
-
+  const [isError, setIsError] = useState(false);
   const [reservationData, setReservationData] = useState<ReservationData>({
     checkin: dayjs(),
     checkout: dayjs().add(1, "day"),
@@ -52,6 +52,9 @@ const Hotel = () => {
   let avilableRooms;
   let allRooms;
   let reviews: Review[] = [];
+  useEffect(() => {
+    document.title = "Hotel";
+  }, []);
 
   const checkInDate = reservationData.checkin.format("YYYY-MM-DD");
   const checkOutDate = reservationData.checkout.format("YYYY-MM-DD");
@@ -96,24 +99,27 @@ const Hotel = () => {
     hotel = data || undefined;
     reviews = reviewData || [];
 
-    const isLoading =
-      isAllRoomsLoading ||
-      isHotelLoading ||
-      isImagesLoading ||
-      isReviewsLoading ||
-      isAvailableRoomLoading;
-    if (isLoading) return <Loading />;
-
-    const isError =
+    if (
       hotelError ||
       imagesError ||
       reviewError ||
       avilableRoomError ||
-      allRoomsError;
-
-    if (isError) return alert('Something went wrong..');
+      allRoomsError
+    ) {
+      setIsError(true);
+    }
+    if (
+      isAllRoomsLoading ||
+      isAvailableRoomLoading ||
+      isHotelLoading ||
+      isImagesLoading ||
+      isReviewsLoading
+    ) {
+      return <Loading />;
+    }
   } catch (e) {
     console.error("Error fetching hotel data:", e);
+    setIsError(true);
   }
 
   const handleCheckDate = (values: ReservationData) => {
@@ -129,6 +135,10 @@ const Hotel = () => {
       })
     );
   };
+
+  if (isError) {
+    return <SomethingWentWrong />;
+  }
 
   return (
     <Paper
