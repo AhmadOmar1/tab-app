@@ -1,20 +1,23 @@
-import Box from "@mui/material/Box";
-import HotelsGrid from "../../components/cards/hotel/hotels-grid.component";
-import { SearchField } from "../../components/search-field/search-field.component";
-import { useGetHotelBySearchMutation } from "../../redux/user/hotel/hotelsApi";
-import dayjs from "dayjs";
-import Loading from "../../components/common/loading/loading.component";
-import { Hotel } from "../../models/hotel";
-import { useEffect, useState } from "react";
-import { Drawer, Fade, IconButton, Typography } from "@mui/material";
-import SideBar from "./side-bar/sidebar.component";
+import React, { useEffect, useState, useCallback } from "react";
+import { Box, Drawer, Fade } from "@mui/material";
+import { useGetHotelBySearchMutation } from "../../redux/user/hotel/search-api";
 import { ChevronLeft, FilterAlt } from "@mui/icons-material";
 import { useSearchParams } from "react-router-dom";
+import { SearchField } from "../../components/search-field/search-field.component";
 import { FilterData } from "../../models/filter";
+import { Hotel } from "../../models/hotel";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import HotelsGrid from "../../components/cards/hotel/hotels-grid.component";
+import SideBar from "./side-bar/sidebar.component";
+import Loading from "../../components/common/loading/loading.component";
+import dayjs from "dayjs";
 import style from "./search.module.css";
-export default function Search() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchResults, setSearchResults] = useState<Hotel[]>();
+
+const Search: React.FC = () => {
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+  const [searchResults, setSearchResults] = useState<Hotel[]>([]);
+  const [filteredResults, setFilteredResults] = useState<Hotel[]>([]);
   const [searchParams] = useSearchParams();
 
   const [filterData, setFilterData] = useState<FilterData>({
@@ -23,6 +26,7 @@ export default function Search() {
     amenities: [],
     roomType: "All rooms",
   });
+
   const location = searchParams.get("location") ?? "";
   const checkin = dayjs(searchParams.get("checkin"));
   const checkout = dayjs(searchParams.get("checkout")).add(1, "day");
@@ -30,62 +34,37 @@ export default function Search() {
   const children = Number(searchParams.get("children") ?? 0);
   const rooms = Number(searchParams.get("rooms") ?? 1);
 
-  const [fetchSearchResultsMutation, { isLoading }] =
-    useGetHotelBySearchMutation();
+  const [fetchSearchResultsMutation, { isLoading }] = useGetHotelBySearchMutation();
 
-  const searchQuery = `checkInDate=${checkin.format(
-    "YYYY-MM-DD"
-  )}&checkOutDate=${checkout.format("YYYY-MM-DD")}&location=${location}
-    &adults=${adults}&children=${children}&rooms=${rooms}&starRating=${
-    filterData.starRating
-  }`;
-
-  const applyFilters = (dataToFilter: Hotel[]) => {
-    return dataToFilter.filter((hotel) => {
-      const starRatingMatches =
-        hotel.starRating >= filterData.starRating ||
-        filterData.starRating === 0;
-      const priceMatches =
-        (hotel.roomPrice as number) >= filterData.price[0] &&
-        (hotel.roomPrice as number) <= filterData.price[1];
-      const roomTypeMatches =
-        filterData.roomType === "All rooms" ||
-        filterData.roomType === "" ||
-        hotel.roomType === filterData.roomType;
-      const amenitiesMatches =
-        filterData.amenities.length === 0 ||
-        filterData.amenities.every((amenityName: string) =>
-          hotel.amenities.some(
-            (amenity: { name: string }) => amenity.name === amenityName
-          )
-        );
-      return (
-        starRatingMatches && priceMatches && roomTypeMatches && amenitiesMatches
-      );
-    });
-  };
-
-  const [fetchedData, setFetchedData] = useState<Hotel[]>([]);
+  const searchQuery = React.useMemo(() => {
+    return `checkInDate=${checkin.format("YYYY-MM-DD")}&checkOutDate=${checkout.format("YYYY-MM-DD")}&location=${location}&adults=${adults}&children=${children}&rooms=${rooms}&starRating=${filterData.starRating}`;
+  }, [checkin, checkout, location, adults, children, rooms, filterData.starRating]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetchSearchResultsMutation(searchQuery);
-        if ("data" in response) {
-          setFetchedData(response.data);
-          const filteredResults = applyFilters(response.data);
-          setSearchResults(filteredResults);
-        }
+        const response = await fetchSearchResultsMutation(searchQuery).unwrap();
+        setSearchResults(response);
+        setFilteredResults(applyFilters(response));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [searchQuery]);
+  }, [searchQuery, fetchSearchResultsMutation]);
 
   useEffect(() => {
-    const filteredResults = applyFilters(fetchedData);
-    setSearchResults(filteredResults);
+    setFilteredResults(applyFilters(searchResults));
+  }, [filterData, searchResults]);
+
+  const applyFilters = useCallback((dataToFilter: Hotel[]): Hotel[] => {
+    return dataToFilter.filter((hotel) => {
+      const starRatingMatches = hotel.starRating === filterData.starRating || filterData.starRating === 0;
+      const priceMatches = hotel.roomPrice as number >= filterData.price[0] && hotel.roomPrice as number <= filterData.price[1];
+      const roomTypeMatches = filterData.roomType === "All rooms" || filterData.roomType === "" || hotel.roomType === filterData.roomType;
+      const amenitiesMatches = filterData.amenities.length === 0 || filterData.amenities.every((amenityName) => hotel.amenities.some((amenity) => amenity.name === amenityName));
+      return starRatingMatches && priceMatches && roomTypeMatches && amenitiesMatches;
+    });
   }, [filterData]);
 
   const handleDrawerToggle = () => {
@@ -99,29 +78,17 @@ export default function Search() {
     left: "50px",
     zIndex: 10000,
     transform: "translateY(-50%)",
-    backgroundColor: " rgba(0, 0, 0, .5)",
+    backgroundColor: "rgba(0, 0, 0, .5)",
     ...(mobileOpen && {
       left: drawerWidth - 35,
       top: "105px",
       backgroundColor: "none",
     }),
     transition: "left 0.3s ease-out",
-  };
+  } as const;
 
-  const handleFilter = async (values: FilterData) => {
+  const handleFilter = (values: FilterData) => {
     setFilterData(values);
-    try {
-      const response = await fetchSearchResultsMutation(searchQuery);
-
-      if ("data" in response) {
-        const filteredResults = applyFilters(response.data);
-        setSearchResults(filteredResults);
-      }
-    } catch (error) {
-      console.error("Error fetching or filtering data:", error);
-    } finally {
-      handleDrawerToggle();
-    }
   };
 
   return (
@@ -183,21 +150,27 @@ export default function Search() {
               checkin={checkin}
               checkout={checkout}
             />
-            {!isLoading && searchResults?.length === 0 && (
-              <Box>
-                <Typography variant="h5" textAlign={"center"}>
-                  No results found for your filter criteria.
-                </Typography>
-                <Typography variant="body1" textAlign={"center"}>
-                  Please try different filters or clear all filters to see more
-                </Typography>
-              </Box>
+            {!isLoading && (
+              <>
+                {filteredResults.length === 0 && (
+                  <Box className={style.noResults}>
+                    <Typography variant="h5" textAlign="center">
+                      No results found for your filter criteria.
+                    </Typography>
+                    <Typography variant="body1" textAlign="center">
+                      Please try different filters or clear all filters to see more.
+                    </Typography>
+                  </Box>
+                )}
+                {filteredResults.length > 0 && <HotelsGrid data={filteredResults} />}
+              </>
             )}
-            <HotelsGrid data={searchResults ?? []} />
           </Box>
         </Box>
         {isLoading && <Loading />}
       </Box>
     </Fade>
   );
-}
+};
+
+export default Search;
