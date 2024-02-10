@@ -12,19 +12,21 @@ import PaymentCard from "../../components/cards/payment-card.component";
 import RoomOrder from "../../components/cards/room/room-order.component";
 import style from "./checkout.module.css";
 import SpecialRequest from "../../components/cards/special-request.component";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { PersonalDetailsProps } from "../../models/personal-details";
 import { PaymentDetailsProps } from "../../models/payment-details";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Room } from "../../models/room";
-import { useGetHotelByIdQuery } from "../../redux/user/hotel/hotelsApi";
+import { useGetHotelByIdQuery } from "../../redux/user/hotel/hotels-api";
 import { useBookMutation } from "../../redux/user/booking/booking-api";
 import { Fade } from "@mui/material";
 
 export default function CheckOut() {
-  const location = useLocation();
-  const room: Room = location.state;
+  let [searchParams] = useSearchParams();
+  const roomParam = searchParams.get("room");
+  const room = roomParam ? (JSON.parse(roomParam) as Room) : null;
+
   const { checkin, checkout } = useSelector(
     (state: RootState) => state.searchFormValues.searchRoomDate
   );
@@ -32,7 +34,7 @@ export default function CheckOut() {
   const navigate = useNavigate();
 
   if (!room) {
-    console.log("Room is null or undefined:", room);
+    alert("Room is null or undefined");
     navigate("/home");
     return;
   }
@@ -114,6 +116,9 @@ export default function CheckOut() {
   function handleReset(): void {
     setActiveStep(0);
   }
+  console.log("room", room);
+  console.log("hotelData", hotelData);
+  console.log("personalData", personalData);
 
   const steps = [
     {

@@ -6,7 +6,7 @@ import SearchBar from '../../../components/common/search-bar/search-bar.componen
 import CustomPopup from '../../../components/popups/popup.component'
 import CustomTable, { TableColumn } from '../components/table/custom-table.component'
 import UpdateHotel from './components/update-hotel.component'
-import { AddHotel as AddHotelModel, Hotel } from '../../../models/hotel'
+import { AddHotel as AddHotelModel } from '../../../models/hotel'
 import { useDeleteHotelMutation, useGetHotelsQuery } from '../../../redux/admin/hotel/hotel-api'
 import AddHotel from './components/add-hotel.component'
 import { hotelTypes } from './components/add-hotel.component'
