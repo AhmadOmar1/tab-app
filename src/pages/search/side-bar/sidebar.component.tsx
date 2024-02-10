@@ -1,5 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useFormik } from "formik";
+import { RatingCheckbox } from "../../../components/raiting/raiting-checkbox.componen";
+import { FilterData } from "../../../models/filter";
+import { RoomTypes } from "../../admin/rooms/components/addroom/room-details.component";
+import { useGetAmentiesQuery } from "../../../redux/user/hotel/amenities-api";
 import {
   Box,
   Button,
@@ -18,26 +22,13 @@ import AmenitiesIcon from "../../../assets/icons/amenities-icon.component";
 import HomeIcon from "../../../assets/icons/home-icon.component";
 import MultiSelect from "../../../components/common/select-menu/multi-select.component";
 import SingleSelectCheckmarks from "../../../components/common/select-menu/select-menu.component";
-import { RatingCheckbox } from "../../../components/raiting/raiting-checkbox.componen";
-import { FilterData } from "../../../models/filter";
-import { useGetAmentiesQuery } from "../../../redux/user/hotel/hotelsApi";
-import { RoomTypes } from "../../admin/rooms/components/addroom/room-details.component";
 
-const SideBar: React.FC<{
-  onFilter: (values: FilterData) => void;
-}> = ({ onFilter }) => {
-  const { data, isError } = useGetAmentiesQuery();
+const SideBar: React.FC<{ onFilter: (values: FilterData) => void }> = ({
+  onFilter,
+}) => {
+  const { data } = useGetAmentiesQuery();
 
   const names = data?.map((item) => item.name) || [];
-
-  useEffect(() => {
-    if (data) {
-      console.log("Amenities Data:", data);
-    }
-    if (isError) {
-      console.error("Error fetching Amenities Data:", isError);
-    }
-  }, [data]);
 
   const initialValues: FilterData = {
     price: [50, 1000],
@@ -49,14 +40,14 @@ const SideBar: React.FC<{
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
-      try {
-        onFilter(values);
-      } catch (err) {
-        console.log(err);
-      }
+      onFilter(values);
     },
   });
 
+  const handleClearForm = () => {
+    formik.resetForm();
+    onFilter(initialValues);
+  };
   return (
     <Container>
       <form onSubmit={formik.handleSubmit}>
@@ -207,6 +198,26 @@ const SideBar: React.FC<{
           >
             Filter
           </Button>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              onClick={handleClearForm}
+              variant="contained"
+              color="error"
+              sx={{
+                height: "40px",
+                borderRadius: "7px",
+                width: "50%",
+              }}
+            >
+              Reset
+            </Button>
+          </Box>
         </Box>
       </form>
     </Container>

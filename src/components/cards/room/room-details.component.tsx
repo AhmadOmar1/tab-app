@@ -14,8 +14,10 @@ const RoomDetails: React.FC<{ room: Room }> = ({ room }) => {
     const navigate = useNavigate();
 
     const handleBookClick = () => {
-        navigate(`/checkout` , {state:room})
+        const roomParams = new URLSearchParams({room: JSON.stringify(room)}).toString();
+        navigate(`/checkout?${roomParams}`);
     }
+    
     return (<Card elevation={5} sx={{ maxWidth: '800px', overflow: 'hidden' }}>
         <CardMedia
             component="img"
@@ -29,7 +31,7 @@ const RoomDetails: React.FC<{ room: Room }> = ({ room }) => {
                 </Typography>
                 <Box>
                     <Typography gutterBottom sx={{ fontWeight: 'bold', fontFamily: 'Montserrat', fontSize: 20 }} variant="h4" component="div">
-                        {room.price % 1 === 0 ? `$${room.price}.00` : `$${room.price}0`}
+                        {room.price as number % 1 === 0 ? `$${room.price}.00` : `$${room.price}0`}
                     </Typography>
                     <Typography gutterBottom sx={{ fontFamily: 'Montserrat', lineHeight: 0 }} variant="body1" component="div">
                         night

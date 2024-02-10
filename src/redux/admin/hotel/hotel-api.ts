@@ -9,21 +9,19 @@ export const HOTEL_URL = "api/hotels";
 export const hotelAdminApi = createApi({
     reducerPath: 'hotelAdminApi',
     baseQuery,
+    tagTypes: ['Hotel'], // Define tag types for hotel-related data
     endpoints: (builder) => ({
         getHotels: builder.query<AddHotel[], void>({
             query: () => HOTEL_URL,
+            providesTags: ['Hotel'],
         }),
-
         addHotel: builder.mutation<AddHotel, { cityId: number, hotel: AddHotel }>({
             query: ({ cityId, hotel }) => ({
-              url: `${CITY_URL}/${cityId}/hotels`,  // Use cityId instead of hotel.cityId
+              url: `${CITY_URL}/${cityId}/hotels`,
               method: 'POST',
               body: hotel,
             }),
-            transformResponse: (response: AddHotel, _, { cityId }) => ({
-                ...response,
-                cityId,
-              }),
+            invalidatesTags: ['Hotel'], 
         }),
         updateHotel: builder.mutation<HttpStatusCode, { hotel: AddHotel }>({
             query: ({ hotel }) => ({
@@ -31,17 +29,18 @@ export const hotelAdminApi = createApi({
                 method: 'PUT',
                 body: hotel,
             }),
+            invalidatesTags: ['Hotel'], 
         }),
-
         deleteHotel: builder.mutation<HttpStatusCode, { hotelId: number }>({
             query: ({ hotelId }) => ({
                 url: `${HOTEL_URL}/${hotelId}`,
                 method: 'DELETE',
             }),
+            invalidatesTags: ['Hotel'], 
         }),
     }),
+});
 
-    });
 
     export const {
         useGetHotelsQuery,

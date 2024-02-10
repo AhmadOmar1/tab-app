@@ -4,21 +4,22 @@ import { City } from '../../../models/trending-destination';
 import { HttpStatusCode } from 'axios';
 
 const CITY_URL = "api/cities";
-
-
 export const cityApi = createApi({
     reducerPath: 'cityApi',
     baseQuery,
+    tagTypes: ['City'], 
     endpoints: (builder) => ({
         getCities: builder.query<City[], void>({
             query: () => CITY_URL,
+            providesTags: ['City'],
         }),
-        addCity: builder.mutation<City, { city:City }>({
+        addCity: builder.mutation<City, { city: City }>({
             query: (newCity) => ({
                 url: CITY_URL,
                 method: 'POST',
                 body: newCity,
             }),
+            invalidatesTags: ['City'], 
         }),
         updateCity: builder.mutation<City, { cityId: number, city: City }>({
             query: ({ city, cityId }) => ({
@@ -26,6 +27,7 @@ export const cityApi = createApi({
                 method: 'PUT',
                 body: city,
             }),
+            invalidatesTags: ['City'], 
         }),
 
         deleteCity: builder.mutation<HttpStatusCode, { cityId: number }>({
@@ -33,6 +35,7 @@ export const cityApi = createApi({
                 url: `${CITY_URL}/${cityId}`,
                 method: 'DELETE',
             }),
+            invalidatesTags: ['City'],
         }),
     }),
 });
@@ -43,4 +46,3 @@ export const {
     useUpdateCityMutation,
     useDeleteCityMutation,
 } = cityApi;
-

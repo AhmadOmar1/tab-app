@@ -10,12 +10,12 @@ import {
 } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import {
-  useGetHotelAvilableRoomsByIdQuery as useGetHotelAvailableRoomsByIdQuery,
+  useGetHotelAvailableRoomsByIdQuery,
   useGetHotelByIdQuery,
   useGetHotelGalleryByIdQuery,
   useGetHotelReviewsByIdQuery,
   useGetHotelRoomsByIdQuery,
-} from "../../redux/user/hotel/hotelsApi";
+} from "../../redux/user/hotel/hotels-api";
 import Loading from "../../components/common/loading/loading.component";
 import { Hotel as HotelModel } from "../../models/hotel";
 import { Review } from "../../models/review";
