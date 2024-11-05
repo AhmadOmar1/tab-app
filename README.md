@@ -39,6 +39,9 @@ Welcome to our Travel and Accommodation Booking Platform! This web application a
 ## Usage
 
  - Access the application by visiting http://localhost:5173/ in your web browser.
+ - for login 
+username : user
+password : user
 
 - Explore hotels, make bookings, and enjoy the seamless user experience.
 
